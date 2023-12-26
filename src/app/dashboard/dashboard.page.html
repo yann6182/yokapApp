@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/add-operation"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tableau de Bord</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Totaux Journaliers
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let dailyTotal of dailyTotals">
+          <ion-label>{{ dailyTotal.type }}</ion-label>
+          <ion-note slot="end">{{ dailyTotal.total | currency:'EUR' }}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Totaux Hebdomadaires
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let weeklyTotal of weeklyTotals">
+          <ion-label>{{ weeklyTotal.type }}</ion-label>
+          <ion-note slot="end">{{ weeklyTotal.total | currency:'EUR' }}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Ajoutez d'autres sections pour les totaux mensuels, annuels, etc. -->
+
+</ion-content>

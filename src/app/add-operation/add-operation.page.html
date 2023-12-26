@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-back-button routerLink="/dashboard"></ion-back-button>
+    <ion-title>Ajouter une opération</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Type</ion-label>
+    <ion-select [(ngModel)]="operationType">
+      <ion-select-option value="entrée">Entrée</ion-select-option>
+      <ion-select-option value="sortie">Sortie</ion-select-option>
+      <!-- Ajoutez d'autres options au besoin -->
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Libellé</ion-label>
+    <ion-input [(ngModel)]="operationLabel" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Montant</ion-label>
+    <ion-input [(ngModel)]="operationAmount" type="number"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="onAddOperation()">Ajouter</ion-button>
+
+<ion-button routerLink="/dashboard">
+  dashboard
+</ion-button>
+
+</ion-content>
