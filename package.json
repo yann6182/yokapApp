@@ -29,6 +29,7 @@
     "@ionic-native/sqlite": "^5.36.0",
     "@ionic/angular": "^7.0.0",
     "@ionic/storage-angular": "^4.0.0",
+    "cordova-plugin-googleplus": "^8.5.2",
     "cordova-sqlite-storage": "^6.1.0",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",

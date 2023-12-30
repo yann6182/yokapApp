@@ -1,27 +1,46 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SqliteService {
   private database: SQLiteObject | undefined;
+  soldes$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private sqlite: SQLite) {
     this.initDatabase();
+    
   }
 
   private initDatabase() {
     this.sqlite.create({
-      name: 'yokap.db',
+      name: 'yokap1.db',
       location: 'default',
     }).then((db: SQLiteObject) => {
       this.database = db;
       this.createTables();
+      this.initializeMainBalance(); // Ajoutez cette ligne
     }).catch((error) => {
       console.error('Erreur lors de la création de la base de données', error);
     });
   }
+  
+  private initializeMainBalance() {
+    const insertMainBalanceQuery = `
+      INSERT OR IGNORE INTO main_balance (balance) VALUES (0)
+    `;
+  
+    if (this.database) {
+      this.database.executeSql(insertMainBalanceQuery, [])
+        .then(() => console.log('Solde principal initialisé avec succès'))
+        .catch(error => console.error('Erreur lors de linitialisation du solde principal', error));
+    } else {
+      console.error('Database is not initialized');
+    }
+  }
+  
 
   private createTables() {
     const createTableQuery = `
@@ -33,30 +52,52 @@ export class SqliteService {
         date TEXT
       )
     `;
-
+  
+    const createMainBalanceTableQuery = `
+      CREATE TABLE IF NOT EXISTS main_balance (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        balance REAL
+      )
+    `;
+  
     if (this.database) {
       this.database.executeSql(createTableQuery, [])
         .then(() => console.log('Table "operations" créée avec succès'))
         .catch(error => console.error('Erreur lors de la création de la table "operations"', error));
+  
+      this.database.executeSql(createMainBalanceTableQuery, [])
+        .then(() => console.log('Table "main_balance" créée avec succès'))
+        .catch(error => console.error('Erreur lors de la création de la table "main_balance"', error));
     } else {
       console.error('Database is not initialized');
     }
   }
+  
 
-  async addOperation(type: string, label: string, amount: number): Promise<void> {
-    const date = new Date().toISOString();
+  async addOperation(type: string, label: string, amount: number, date: string): Promise<void> {
     const addOperationQuery = `
       INSERT INTO operations (type, label, amount, date) VALUES (?, ?, ?, ?)
     `;
-
+   
     if (this.database) {
       await this.database.executeSql(addOperationQuery, [type, label, amount, date])
-          .then(() => console.log('Opération ajoutée avec succès'))
-          .catch(error => console.error('Erreur lors de l\'ajout de l\'opération', error));
-  } else {
+        .then(async () => {
+          console.log('Opération ajoutée avec succès');
+   
+          if (type === 'deposit' || type === 'loan') {
+            // Si c'est un dépôt ou un emprunt, mettre à jour le solde principal
+            await this.updateMainBalance(amount);
+          } else if (type === 'withdrawal' || type === 'loan') {
+            // Si c'est un retrait ou un prêt, débiter le solde principal
+            await this.updateMainBalance(-amount);
+          }
+        })
+        .catch(error => console.error('Erreur lors de l\'ajout de l\'opération', error));
+    } else {
       console.error('Database is not initialized');
-  }
-  }
+    }
+   }
+   
 
   async getOperations(): Promise<any[]> {
     const getOperationsQuery = `
@@ -65,20 +106,144 @@ export class SqliteService {
 
     if (this.database) {
       return this.database.executeSql(getOperationsQuery, [])
-      .then(data => {
-        const operations = [];
-        for (let i = 0; i < data.rows.length; i++) {
-          operations.push(data.rows.item(i));
-        }
-        return operations;
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des opérations', error);
-        return [];
-      });
+        .then(data => {
+          const operations = [];
+          for (let i = 0; i < data.rows.length; i++) {
+            operations.push(data.rows.item(i));
+          }
+          return operations;
+        })
+        .catch(error => {
+          console.error('Erreur lors de la récupération des opérations', error);
+          return [];
+        });
     } else {
       console.error('Database is not initialized');
       return [];
+    }
+  }
+
+  async updateMainBalance(amount: number): Promise<void> {
+    const currentBalance = await this.getMainBalance();
+    const newBalance = currentBalance + amount;
+  
+    const updateBalanceQuery = `
+      UPDATE main_balance SET balance = ?
+    `;
+  
+    if (this.database) {
+      await this.database.executeSql(updateBalanceQuery, [newBalance])
+        .then(() => {
+          console.log('Solde principal mis à jour avec succès');
+          // Si vous souhaitez effectuer des actions supplémentaires après la mise à jour du solde, vous pouvez les ajouter ici.
+        })
+        .catch(error => console.error('Erreur lors de la mise à jour du solde principal', error));
+    } else {
+      console.error('Database is not initialized');
+    }
+  }
+  async getSoldes(): Promise<any> {
+    // Vous devrez adapter cela en fonction de votre structure de données
+    return { mainBalance: await this.getMainBalance(), /* autres soldes si nécessaire */ };
+  }
+  async updateBalances(type: string, amount: number): Promise<void> {
+    const currentBalance = await this.getMainBalance();
+    const newBalance = currentBalance + amount;
+
+    const updateBalanceQuery = `
+      UPDATE main_balance SET balance = ?
+    `;
+
+    if (this.database) {
+      await this.database.executeSql(updateBalanceQuery, [newBalance])
+        .then(() => console.log('Solde principal mis à jour avec succès'))
+        .catch(error => console.error('Erreur lors de la mise à jour du solde principal', error));
+    } else {
+      console.error('Database is not initialized');
+    }
+
+    // Mettez à jour les autres soldes si nécessaire
+
+    // Émettez les nouveaux soldes
+    this.soldes$.next({ mainBalance: newBalance, /* autres soldes si nécessaire */ });
+  }
+  
+ async getTotalByType(type: string): Promise<number> {
+    const getTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.database) {
+      const result = await this.database.executeSql(getTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
+    }
+  }
+
+  async getMainBalance(): Promise<number> {
+    const incomeTotal = await this.calculateTotal('income');
+    const loanTotal = await this.calculateTotal('loan');
+    const retraittotal = await this.calculateTotal('withdrawal');
+    const empruntTotal = await this.calculateTotal('borrow');
+    // Solde principal = total income - total loan
+    const mainBalance = (incomeTotal +empruntTotal )-(retraittotal+loanTotal);
+  
+    return mainBalance;
+  }
+  
+
+  async getDailyTotals(): Promise<any[]> {
+    const today = new Date().toISOString().split('T')[0];
+    const getDailyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date = ? GROUP BY type
+    `;
+
+    if (this.database) {
+      const result = await this.database.executeSql(getDailyTotalsQuery, [today]);
+      const dailyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        dailyTotals.push(result.rows.item(i));
+      }
+      return dailyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
+
+  async getWeeklyTotals(): Promise<any[]> {
+    const today = new Date();
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    const getWeeklyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date >= ? GROUP BY type
+    `;
+
+    if (this.database) {
+      const result = await this.database.executeSql(getWeeklyTotalsQuery, [startOfWeek.toISOString().split('T')[0]]);
+      const weeklyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        weeklyTotals.push(result.rows.item(i));
+      }
+      return weeklyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
+
+  async calculateTotal(type: string): Promise<number> {
+    const calculateTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.database) {
+      const result = await this.database.executeSql(calculateTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
     }
   }
 }

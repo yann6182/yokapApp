@@ -10,12 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
+
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,  HttpClientModule,
-    IonicStorageModule.forRoot()],
+    IonicStorageModule.forRoot(), ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SQLite],
+    SQLite,  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OperationService } from '../services/operation.service';
+import { SqliteService } from '../services/sqlite.service'; // Assurez-vous d'importer le service SQLite approprié
 
 @Component({
   selector: 'app-add-operation',
@@ -7,24 +7,37 @@ import { OperationService } from '../services/operation.service';
   styleUrls: ['add-operation.page.scss'],
 })
 export class AddOperationPage {
-  operationType: string|any;
-  operationLabel: string|any;
-  operationAmount: number|any;
+  operationType: string | undefined;
+  operationLabel: string | undefined;
+  operationAmount: number | undefined;
 
-  constructor(private operationService: OperationService) {}
+  constructor(private sqliteService: SqliteService) {}
 
-  onAddOperation() {
+  async onAddOperation() {
     if (this.operationType && this.operationLabel && this.operationAmount) {
-      this.operationService.addOperation(this.operationType, this.operationLabel, this.operationAmount)
-        .then(() => {
-          // Opération ajoutée avec succès, effectuer des actions supplémentaires si nécessaire
-          console.log('Opération ajoutée avec succès');
-        })
-        .catch(error => {
-          console.error('Erreur lors de l\'ajout de l\'opération', error);
-        });
+      try {
+        const currentDate = new Date().toISOString();
+        switch (this.operationType) {
+          case 'income':
+          case 'withdrawal':
+          case 'borrow':
+          case 'loan':
+          case 'savings':
+          case 'deposit': // Ajout du cas pour le type 'deposit'
+            await this.sqliteService.addOperation(this.operationType, this.operationLabel, this.operationAmount, currentDate);
+            break;
+          default:
+            console.error('Invalid operation type');
+            return;
+        }
+
+        console.log('Opération ajoutée avec succès');
+      } catch (error) {
+        console.error('Erreur lors de l\'ajout de l\'opération', error);
+      }
     } else {
       console.error('Veuillez remplir tous les champs du formulaire.');
     }
+    
   }
 }

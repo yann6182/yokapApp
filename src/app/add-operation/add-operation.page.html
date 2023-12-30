@@ -1,6 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
       <ion-back-button routerLink="/dashboard"></ion-back-button>
+    </ion-buttons>
     <ion-title>Ajouter une opération</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +11,11 @@
   <ion-item>
     <ion-label>Type</ion-label>
     <ion-select [(ngModel)]="operationType">
-      <ion-select-option value="entrée">Entrée</ion-select-option>
-      <ion-select-option value="sortie">Sortie</ion-select-option>
-      <!-- Ajoutez d'autres options au besoin -->
+      <ion-select-option value="income">Entrée</ion-select-option>
+      <ion-select-option value="withdrawal">Sortie</ion-select-option>
+      <ion-select-option value="borrow">Emprunt</ion-select-option>
+      <ion-select-option value="loan">Prêt</ion-select-option>
+      <ion-select-option value="savings">Épargne</ion-select-option>
     </ion-select>
   </ion-item>
 
@@ -27,8 +31,7 @@
 
   <ion-button expand="full" (click)="onAddOperation()">Ajouter</ion-button>
 
-<ion-button routerLink="/dashboard">
-  dashboard
-</ion-button>
-
+  <ion-button routerLink="/dashboard">
+    Dashboard
+  </ion-button>
 </ion-content>

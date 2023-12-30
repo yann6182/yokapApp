@@ -16,7 +16,7 @@
       <ion-list>
         <ion-item *ngFor="let dailyTotal of dailyTotals">
           <ion-label>{{ dailyTotal.type }}</ion-label>
-          <ion-note slot="end">{{ dailyTotal.total | currency:'EUR' }}</ion-note>
+          <ion-note slot="end">{{ dailyTotal.total | currency:'FCFA' }}</ion-note>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -30,12 +30,34 @@
       <ion-list>
         <ion-item *ngFor="let weeklyTotal of weeklyTotals">
           <ion-label>{{ weeklyTotal.type }}</ion-label>
-          <ion-note slot="end">{{ weeklyTotal.total | currency:'EUR' }}</ion-note>
+          <ion-note slot="end">{{ weeklyTotal.total | currency:'FCFA' }}</ion-note>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <!-- Ajoutez d'autres sections pour les totaux mensuels, annuels, etc. -->
+  <ion-card>
+    <ion-card-header>
+      Total des entrées
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ incomeTotal | currency:'FCFA' }}</p>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-card>
+    <ion-card-header>
+      Solde Principal
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ mainBalance | currency:'FCFA' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+ 
+
+  <!-- Ajoutez d'autres sections pour les totaux mensuels, annuels, etc. -->
+  <ion-button routerLink="/add-operation">
+    Click me
+  </ion-button>
 </ion-content>

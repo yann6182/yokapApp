@@ -3,12 +3,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'add-operation',
-    loadChildren: () => import('./add-operation/add-operation.module').then( m => m.AddOperationPageModule)
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
     path: '',
-    redirectTo: 'add-operation',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   },
   {
@@ -19,6 +19,7 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+  
 ];
 
 @NgModule({
