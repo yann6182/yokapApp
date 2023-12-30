@@ -15,35 +15,38 @@ export class SqliteService {
   }
 
   private initDatabase() {
-    this.sqlite.create({
-      name: 'yokap1.db',
-      location: 'default',
-    }).then((db: SQLiteObject) => {
-      this.database = db;
-      this.createTables();
-      this.initializeMainBalance(); // Ajoutez cette ligne
-    }).catch((error) => {
-      console.error('Erreur lors de la création de la base de données', error);
-    });
+    this.sqlite
+      .create({
+        name: 'yokap1.db',
+        location: 'default',
+      })
+      .then((db: SQLiteObject) => {
+        this.database = db;
+        this.createTables();
+        this.initializeMainBalance(); // Ajoutez cette ligne
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la création de la base de données', error);
+      });
   }
-  
+
   private initializeMainBalance() {
     const insertMainBalanceQuery = `
       INSERT OR IGNORE INTO main_balance (balance) VALUES (0)
     `;
-  
+
     if (this.database) {
-      this.database.executeSql(insertMainBalanceQuery, [])
+      this.database
+        .executeSql(insertMainBalanceQuery, [])
         .then(() => console.log('Solde principal initialisé avec succès'))
-        .catch(error => console.error('Erreur lors de linitialisation du solde principal', error));
+        .catch((error) => console.error('Erreur lors de linitialisation du solde principal', error));
     } else {
       console.error('Database is not initialized');
     }
   }
-  
 
   private createTables() {
-    const createTableQuery = `
+    const createOperationsTableQuery = `
       CREATE TABLE IF NOT EXISTS operations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         type TEXT,
@@ -52,22 +55,39 @@ export class SqliteService {
         date TEXT
       )
     `;
-  
+
+    const createTransactionHistoryTableQuery = `
+      CREATE TABLE IF NOT EXISTS transaction_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        operation_id INTEGER,
+        type TEXT,
+        label TEXT,
+        amount REAL,
+        date TEXT,
+        FOREIGN KEY (operation_id) REFERENCES operations (id)
+      )
+    `;
+
     const createMainBalanceTableQuery = `
       CREATE TABLE IF NOT EXISTS main_balance (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         balance REAL
       )
     `;
-  
+
     if (this.database) {
-      this.database.executeSql(createTableQuery, [])
-        .then(() => console.log('Table "operations" créée avec succès'))
-        .catch(error => console.error('Erreur lors de la création de la table "operations"', error));
-  
-      this.database.executeSql(createMainBalanceTableQuery, [])
-        .then(() => console.log('Table "main_balance" créée avec succès'))
-        .catch(error => console.error('Erreur lors de la création de la table "main_balance"', error));
+      this.database
+        .transaction((tx) => {
+          tx.executeSql(createOperationsTableQuery, []);
+          tx.executeSql(createTransactionHistoryTableQuery, []);
+          tx.executeSql(createMainBalanceTableQuery, []);
+        })
+        .then(() => {
+          console.log('Tables créées avec succès');
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la création des tables', error);
+        });
     } else {
       console.error('Database is not initialized');
     }
@@ -78,25 +98,72 @@ export class SqliteService {
     const addOperationQuery = `
       INSERT INTO operations (type, label, amount, date) VALUES (?, ?, ?, ?)
     `;
-   
+    const addTransactionHistoryQuery = `
+      INSERT INTO transaction_history (operation_id, type, label, amount, date) VALUES (?, ?, ?, ?, ?)
+    `;
+  
     if (this.database) {
-      await this.database.executeSql(addOperationQuery, [type, label, amount, date])
-        .then(async () => {
-          console.log('Opération ajoutée avec succès');
-   
-          if (type === 'deposit' || type === 'loan') {
-            // Si c'est un dépôt ou un emprunt, mettre à jour le solde principal
-            await this.updateMainBalance(amount);
-          } else if (type === 'withdrawal' || type === 'loan') {
-            // Si c'est un retrait ou un prêt, débiter le solde principal
-            await this.updateMainBalance(-amount);
+      await this.database.transaction((tx) => {
+        tx.executeSql(
+          addOperationQuery,
+          [type, label, amount, date],
+          (tx: any, result: any) => {
+            const operationId = result.insertId;
+            tx.executeSql(
+              addTransactionHistoryQuery,
+              [operationId, type, label, amount, date],
+              () => {
+                console.log('Opération ajoutée avec succès');
+                if (type === 'deposit' || type === 'loan') {
+                  // Si c'est un dépôt ou un emprunt, mettre à jour le solde principal
+                  this.updateMainBalance(amount);
+                } else if (type === 'withdrawal' || type === 'loan') {
+                  // Si c'est un retrait ou un prêt, débiter le solde principal
+                  this.updateMainBalance(-amount);
+                }
+              },
+              (error: any) => {
+                console.error('Erreur lors de l\'ajout de l\'historique de l\'opération', error);
+              }
+            );
+          },
+          (error: any) => {
+            console.error('Erreur lors de l\'ajout de l\'opération', error);
           }
-        })
-        .catch(error => console.error('Erreur lors de l\'ajout de l\'opération', error));
+        );
+      });
     } else {
       console.error('Database is not initialized');
     }
-   }
+  }
+  
+
+  async getTransactionHistoryByType(type: string): Promise<any[]> {
+    try {
+      const getHistoryQuery = `
+        SELECT * FROM transaction_history WHERE type = ?
+      `;
+  
+      if (this.database) {
+        const result = await this.database.executeSql(getHistoryQuery, [type]);
+        const history = [];
+  
+        for (let i = 0; i < result.rows.length; i++) {
+          history.push(result.rows.item(i));
+        }
+  
+        return history;
+      } else {
+        console.error('Database is not initialized');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching transaction history:', error);
+      return [];
+    }
+  }
+  
+  
    
 
   async getOperations(): Promise<any[]> {

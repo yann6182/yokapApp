@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historique</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="historique.length > 0; else noTransactions">
+    <ion-list>
+      <ion-item *ngFor="let transaction of historique">
+        <ion-label>{{ transaction.label }}</ion-label>
+        <ion-note slot="end">{{ transaction.amount | currency:'FCFA' }}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-template #noTransactions>
+    <ion-text color="medium" class="ion-text-center">
+      Aucune transaction à afficher.
+    </ion-text>
+  </ng-template>
+</ion-content>

@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs/tabs.page';
 import { DashboardPage } from './dashboard/dashboard.page';
 import { AddOperationPage } from './add-operation/add-operation.page';
+import { HistoriquePage } from './historique/historique.page';
 
 const routes: Routes = [
   
@@ -25,6 +26,14 @@ const routes: Routes = [
           {
             path: '',
             component: AddOperationPage,
+          },
+        ],
+      },{
+        path: 'historique',
+        children: [
+          {
+            path: '',
+            component: HistoriquePage,
           },
         ],
       },
@@ -57,6 +66,10 @@ const routes: Routes = [
     path: 'tabs/add-operation',
     loadChildren: () => import('./add-operation/add-operation.module').then( m => m.AddOperationPageModule)
   },
+  {
+    path: 'tabs/historique',
+    loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
+  },
  
   {
     path: 'add-operation',
@@ -69,6 +82,10 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'historique',
+    loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
   }
   
   

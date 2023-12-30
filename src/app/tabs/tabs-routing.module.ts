@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'add-operation',
         loadChildren: () => import('../add-operation/add-operation.module').then( m => m.AddOperationPageModule)
       },
+      {
+        path: 'historique',
+        loadChildren: () => import('../historique/historique.module').then( m => m.HistoriquePageModule)
+      },
       
       
       {
