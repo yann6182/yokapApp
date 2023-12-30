@@ -4,6 +4,7 @@ import { TabsPage } from './tabs/tabs.page';
 import { DashboardPage } from './dashboard/dashboard.page';
 import { AddOperationPage } from './add-operation/add-operation.page';
 import { HistoriquePage } from './historique/historique.page';
+import { SauvegardePage } from './sauvegarde/sauvegarde.page';
 
 const routes: Routes = [
   
@@ -34,6 +35,14 @@ const routes: Routes = [
           {
             path: '',
             component: HistoriquePage,
+          },
+        ],
+      },{
+        path: 'sauvegarde',
+        children: [
+          {
+            path: '',
+            component: SauvegardePage,
           },
         ],
       },
@@ -70,6 +79,10 @@ const routes: Routes = [
     path: 'tabs/historique',
     loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
   },
+  {
+    path: 'tabs/sauvegarde',
+    loadChildren: () => import('./sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
+  },
  
   {
     path: 'add-operation',
@@ -86,6 +99,10 @@ const routes: Routes = [
   {
     path: 'historique',
     loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
+  },
+  {
+    path: 'sauvegarde',
+    loadChildren: () => import('./sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
   }
   
   

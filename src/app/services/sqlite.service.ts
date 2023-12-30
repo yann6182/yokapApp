@@ -155,7 +155,7 @@ export class SqliteService {
               [operationId, type, label, amount, date],
               () => {
                 console.log('Opération ajoutée avec succès');
-                if (type === 'deposit' || type === 'loan') {
+                if (type === 'deposit' || type === 'borrow') {
                   // Si c'est un dépôt ou un emprunt, mettre à jour le solde principal
                   this.updateMainBalance(amount);
                 } else if (type === 'withdrawal' || type === 'loan') {
