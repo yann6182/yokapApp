@@ -30,6 +30,47 @@ export class SqliteService {
       });
   }
 
+  async getAllTransactionHistory(): Promise<{ type: string, transactions: any[] }[]> {
+    try {
+      const getAllHistoryQuery = `
+        SELECT * FROM transaction_history
+      `;
+  
+      if (this.database) {
+        const result = await this.database.executeSql(getAllHistoryQuery, []);
+        const history: { type: string, transactions: any[] }[] = [];
+  
+        for (let i = 0; i < result.rows.length; i++) {
+          const transaction = result.rows.item(i);
+          const type = transaction.type;
+  
+          // Ajoutez la propriété 'type' à chaque transaction
+          transaction.transactionType = type;
+  
+          // Vérifiez si le type existe déjà dans l'historique
+          const existingType = history.find(item => item.type === type);
+  
+          if (existingType) {
+            // Ajoutez la transaction à un type existant
+            existingType.transactions.push(transaction);
+          } else {
+            // Ajoutez un nouveau type avec la transaction
+            history.push({ type, transactions: [transaction] });
+          }
+        }
+  
+        return history;
+      } else {
+        console.error('Database is not initialized');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching all transaction history:', error);
+      return [];
+    }
+  }
+  
+
   private initializeMainBalance() {
     const insertMainBalanceQuery = `
       INSERT OR IGNORE INTO main_balance (balance) VALUES (0)

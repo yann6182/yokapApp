@@ -9,7 +9,9 @@ import { Subscription } from 'rxjs';
 })
 export class HistoriquePage implements OnInit, OnDestroy {
 
-  operationTypes: string[] = ['Epargne', 'Depot', 'Retrait', 'Pret', 'Emprunt'];
+  operationTypes: string[] = ['withdrawal', 'income', 'borrow', 'savings', 'deposit','loan'];
+  
+
   historique: any[] = [];
   historiqueSubscription: Subscription | any;
 
@@ -32,14 +34,13 @@ export class HistoriquePage implements OnInit, OnDestroy {
   }
 
   async loadHistorique() {
-    // Supposons que vous souhaitez afficher l'historique pour le type 'income'
-    const typeToDisplay = 'income';
-
     try {
-      this.historique = await this.sqliteService.getTransactionHistoryByType(typeToDisplay);
+      // Chargez toutes les transactions pour chaque type
+      this.historique = await this.sqliteService.getAllTransactionHistory();
     } catch (error) {
       console.error('Erreur lors du chargement de l\'historique des transactions', error);
     }
   }
+  
 
 }
