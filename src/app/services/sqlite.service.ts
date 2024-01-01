@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class SqliteService {
   private database: SQLiteObject | undefined;
   soldes$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private sqlite: SQLite) {
+  constructor(private sqlite: SQLite, public alertController: AlertController) {
     this.initDatabase();
     
   }
@@ -135,7 +136,14 @@ export class SqliteService {
       console.error('Database is not initialized');
     }
   }
-  
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
   async addOperation(type: string, label: string, amount: number, date: string): Promise<void> {
     const addOperationQuery = `
@@ -144,8 +152,15 @@ export class SqliteService {
     const addTransactionHistoryQuery = `
       INSERT INTO transaction_history (operation_id, type, label, amount, date) VALUES (?, ?, ?, ?, ?)
     `;
-  
+   
     if (this.database) {
+      // Check if the amount is greater than the main balance before adding the operation
+      if ((type === 'withdrawal' || type === 'loan') && amount > (await this.getMainBalance())) {
+        console.error('Erreur: Montant supérieur au solde principal');
+        this.presentAlert('Erreur d\'opération', 'Le montant est supérieur au solde principal. Opération annulée.');
+        return;
+      }
+   
       await this.database.transaction((tx) => {
         tx.executeSql(
           addOperationQuery,
@@ -155,30 +170,30 @@ export class SqliteService {
             tx.executeSql(
               addTransactionHistoryQuery,
               [operationId, type, label, amount, date],
-              () => {
+              async () => {
                 console.log('Opération ajoutée avec succès');
-                if (type === 'deposit' || type === 'borrow') {
-                  // Si c'est un dépôt ou un emprunt, mettre à jour le solde principal
-                  this.updateMainBalance(amount);
-                } else if (type === 'withdrawal' || type === 'loan') {
-                  // Si c'est un retrait ou un prêt, débiter le solde principal
-                  this.updateMainBalance(-amount);
-                }
+   
+                // Update the main balance
+                const updatedBalance = (type === 'deposit' || type === 'borrow') ? (await this.getMainBalance()) + amount : (await this.getMainBalance()) - amount;
+                this.updateMainBalance(updatedBalance);
+                this.presentAlert('Opération réussie', 'Opération ajoutée avec succès');
               },
               (error: any) => {
                 console.error('Erreur lors de l\'ajout de l\'historique de l\'opération', error);
+                this.presentAlert('Erreur lors de l\'ajout', 'Erreur lors de l\'ajout de l\'historique de l\'opération');
               }
             );
           },
           (error: any) => {
             console.error('Erreur lors de l\'ajout de l\'opération', error);
+            this.presentAlert('Erreur lors de l\'ajout', 'Erreur lors de l\'ajout de l\'opération');
           }
         );
       });
     } else {
       console.error('Database is not initialized');
     }
-  }
+   }
 
   async exportData(): Promise<string> {
   try {
