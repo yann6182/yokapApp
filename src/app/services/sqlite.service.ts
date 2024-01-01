@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SqliteService {
+  operationTypes: string[] = ['withdrawal', 'income', 'borrow', 'savings', 'deposit','loan'];
+
   private database: SQLiteObject | undefined;
   soldes$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -177,6 +179,32 @@ export class SqliteService {
       console.error('Database is not initialized');
     }
   }
+
+  async exportData(): Promise<string> {
+  try {
+    const transactions = await this.getAllTransactionHistory();
+    const mainBalance = await this.getMainBalance();
+    const totalByType: { [type: string]: number } = {};
+
+    // Obtenez les totaux pour chaque type de transaction
+    for (const type of this.operationTypes) {
+      totalByType[type] = await this.getTotalByType(type);
+    }
+
+    // Retournez les données dans le format JSON
+    const exportData = JSON.stringify({
+      transactions,
+      mainBalance,
+      totalByType,
+    });
+
+    return exportData;
+  } catch (error) {
+    console.error('Erreur lors de la collecte des données d\'exportation', error);
+    throw error;
+  }
+}
+
   
 
   async getTransactionHistoryByType(type: string): Promise<any[]> {
