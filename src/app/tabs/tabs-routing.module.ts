@@ -21,6 +21,10 @@ const routes: Routes = [
         path: 'historique',
         loadChildren: () => import('../historique/historique.module').then( m => m.HistoriquePageModule)
       },
+      {
+        path: 'sauvegarde',
+        loadChildren: () => import('../sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
+      },
       
       
       {
