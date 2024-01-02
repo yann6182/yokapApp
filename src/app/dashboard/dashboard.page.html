@@ -1,20 +1,29 @@
+<ion-select color="light" class="selectTheme" [interfaceOptions]="themeColor" interface="popover"
+[(ngModel)]="selectTheme" (ionChange)="dynamicTheme()">
+<ion-select-option color="light" [value]="theme.class" *ngFor="let theme of themeColor;">
+  {{theme.name}}
+</ion-select-option>
+</ion-select>
+
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button routerLink="/add-operation"></ion-back-button>
+      <ion-back-button routerLink="/add-operation" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tableau de Bord</ion-title>
+    <ion-title class="ion-text-center">Tableau de Bord</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-  <ion-card>
+  <!-- Totaux Journaliers -->
+  <ion-card class="dashboard-card">
     <ion-card-header>
-      Totaux Journaliers
+      <ion-title class="card-title">Totaux Journaliers</ion-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let dailyTotal of dailyTotals">
+        <ion-item *ngFor="let dailyTotal of dailyTotals" lines="none">
           <ion-label>{{ dailyTotal.type }}</ion-label>
           <ion-note slot="end">{{ dailyTotal.total | currency:'FCFA' }}</ion-note>
         </ion-item>
@@ -22,13 +31,14 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- Totaux Hebdomadaires -->
+  <ion-card class="dashboard-card">
     <ion-card-header>
-      Totaux Hebdomadaires
+      <ion-title class="card-title">Totaux Hebdomadaires</ion-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let weeklyTotal of weeklyTotals">
+        <ion-item *ngFor="let weeklyTotal of weeklyTotals" lines="none">
           <ion-label>{{ weeklyTotal.type }}</ion-label>
           <ion-note slot="end">{{ weeklyTotal.total | currency:'FCFA' }}</ion-note>
         </ion-item>
@@ -36,25 +46,38 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- Total des entrées -->
+  <ion-card class="dashboard-card">
     <ion-card-header>
-      Total des entrées
+      <ion-title class="card-title">Total des entrées</ion-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ incomeTotal | currency:'FCFA' }}</p>
+      <p class="card-text">{{ incomeTotal | currency:'FCFA' }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Solde Principal -->
+  <ion-card class="dashboard-card">
+    <ion-card-header>
+      <ion-title class="card-title">Solde Principal</ion-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="card-text">{{ mainBalance | currency:'FCFA' }}</p>
     </ion-card-content>
   </ion-card>
 
   <ion-card>
     <ion-card-header>
-      Solde Principal
+      <ion-title>Statistiques</ion-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ mainBalance | currency:'FCFA' }}</p>
+      <div class="chart-container">
+        <canvas #myChart></canvas>
+
+      </div>
+
+      
     </ion-card-content>
   </ion-card>
 
- 
-
- 
 </ion-content>

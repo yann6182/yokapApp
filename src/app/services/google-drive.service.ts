@@ -1,113 +1,119 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
-import { AlertController } from '@ionic/angular';
+
+declare const gapi: any; // Déclaration de gapi pour éviter les erreurs de type
 
 @Injectable({
   providedIn: 'root',
 })
 export class GoogleDriveService {
-  private readonly apiUrl = 'https://www.googleapis.com/upload/drive/v3/files';
+  private authenticated: boolean = false;
+  private token: string = '';
 
-  constructor(private http: HttpClient, public alertController: AlertController) {}
+  private readonly apiUrl = 'https://www.googleapis.com/drive/v3/files';
 
-  async uploadDataToDrive(data: string): Promise<string> {
-    try {
-      // Créez un fichier JSON temporaire sur Google Drive
-      const fileId = await this.createFileOnDrive();
-
-      // Écrivez les données dans le fichier
-      await this.writeDataToFile(fileId, data);
-
-      return fileId;
-    } catch (error) {
-      console.error('Erreur lors de l\'upload des données sur Google Drive', error);
-      this.presentAlert('Erreur d\'upload', 'Une erreur est survenue lors de l\'upload des données sur Google Drive. Veuillez réessayer.');
-      throw error; // Vous pouvez gérer les erreurs selon vos besoins
-    }
+  constructor(private http: HttpClient) {
+    // Chargez l'API Google lors de l'initialisation du service
+    gapi.load('client:auth2', () => this.initClient());
   }
 
-  private async createFileOnDrive(): Promise<string> {
+  private async initClient() {
     try {
-      const createFileUrl = `${this.apiUrl}?uploadType=resumable`;
-
-      // Définir les métadonnées du fichier
-      const metadata = {
-        name: 'monFichier.json',
-        mimeType: 'application/json',
-      };
-
-      // Ajouter l'access token aux en-têtes
-      const headers = await this.getHeadersWithAccessToken();
-
-      // Envoyer une requête POST pour créer un fichier JSON temporaire sur Google Drive
-      const response = await this.http.post(createFileUrl, metadata, { headers, observe: 'response' }).toPromise();
-
-      // Vérifier si la réponse contient l'ID du fichier créé
-      const locationHeader = response?.headers.get('location');
-      const fileId = locationHeader?.split('/').pop() || '';
-
-      if (!fileId) {
-        throw new Error('Impossible de récupérer l\'ID du fichier à partir de l\'en-tête de localisation.');
-      }
-
-      return fileId;
-    } catch (error) {
-      console.error('Erreur lors de la création d\'un fichier sur Google Drive', error);
-      this.presentAlert('Erreur de création de fichier', 'Une erreur est survenue lors de la création d\'un fichier sur Google Drive. Veuillez réessayer.');
-      throw error;
-    }
-  }
-
-  private async writeDataToFile(fileId: string, data: string): Promise<void> {
-    try {
-      const writeDataUrl = `${this.apiUrl}/${fileId}?uploadType=media`;
-
-      // Ajouter l'access token aux en-têtes
-      const headers = await this.getHeadersWithAccessToken();
-
-      // Envoyer une requête PUT pour écrire les données dans le fichier
-      await this.http.put(writeDataUrl, data, { headers }).toPromise();
-    } catch (error) {
-      console.error('Erreur lors de l\'écriture des données dans le fichier sur Google Drive', error);
-      this.presentAlert('Erreur d\'écriture de données', 'Une erreur est survenue lors de l\'écriture des données dans le fichier sur Google Drive. Veuillez réessayer.');
-      throw error;
-    }
-  }
-
-  private async getHeadersWithAccessToken(): Promise<HttpHeaders> {
-    try {
-      // Récupérer l'access token de l'utilisateur connecté
-      const accessToken = await this.getUserAccessToken();
-
-      // Définir les en-têtes de la requête
-      return new HttpHeaders({
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+      await gapi.client.init({
+        apiKey: 'AIzaSyBzrOYT11qkGaScynt2GJ-o5aJHWV8Imvc',
+        clientId: '769661539885-9fem97pe11313dqk2kbsbm8ecr50tumi.apps.googleusercontent.com',
+        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+        scope: 'https://www.googleapis.com/auth/drive.file',
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération du token d\'accès de l\'utilisateur', error);
+      console.error('Erreur lors de l\'initialisation de l\'API Google', error);
       throw error;
     }
   }
-
-  private async getUserAccessToken(): Promise<string> {
-    try {
-      // Utiliser GoogleAuth pour récupérer le token d'accès de l'utilisateur
-      const user = await GoogleAuth.signIn();
-      return user.authentication.accessToken || '';
-    } catch (error) {
-      console.error('Erreur lors de la récupération du token d\'accès de l\'utilisateur', error);
-      throw error;
-    }
-  }
-
-  private async presentAlert(header: string, message: string): Promise<void> {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
+  authenticate(): Promise<void> {
+    // Ajoutez votre logique d'authentification ici
+    return new Promise<void>((resolve, reject) => {
+      gapi.auth2.getAuthInstance().signIn().then(
+        (user:any) => {
+          console.log('Utilisateur authentifié avec succès:', user);
+          resolve();
+        },
+        (error:any) => {
+          console.error('Erreur lors de l\'authentification:', error);
+          reject(new Error('Erreur lors de l\'authentification'));
+        }
+      );
     });
-    await alert.present();
   }
+
+  isAuthenticated(): boolean {
+    const user = gapi.auth2.getAuthInstance().currentUser.get();
+    return user.isSignedIn();
+  }
+
+  readFiles(): Promise<any[]> {
+    // Implémentez la logique pour lire les fichiers depuis Google Drive
+    // Utilisez this.token pour inclure le jeton d'accès dans votre requête
+    return new Promise<any[]>((resolve, reject) => {
+      // Exemple de code pour la lecture des fichiers, remplacez-le par votre implémentation
+      gapi.client.drive.files.list({
+        'pageSize': 10,
+        'fields': 'files(id, name)',
+      }).then((response:any) => {
+        const files = response.result.files;
+        resolve(files);
+      }).catch((error:any) => {
+        console.error('Erreur lors de la lecture des fichiers:', error);
+        reject(error);
+      });
+    });
+  }
+
+  async createFileWithJSONContent(name: string, data: string): Promise<void> {
+    const boundary = '-------314159265358979323846';
+    const delimiter = '\r\n--' + boundary + '\r\n';
+    const close_delim = '\r\n--' + boundary + '--';
+
+    const contentType = 'application/json';
+
+    const metadata = {
+      name: name,
+      mimeType: contentType,
+    };
+
+    const multipartRequestBody =
+      delimiter +
+      'Content-Type: application/json\r\n\r\n' +
+      JSON.stringify(metadata) +
+      delimiter +
+      'Content-Type: ' +
+      contentType +
+      '\r\n\r\n' +
+      data +
+      close_delim;
+
+    const request = gapi.client.request({
+      path: '/upload/drive/v3/files',
+      method: 'POST',
+      params: { uploadType: 'multipart' },
+      headers: {
+        'Content-Type': 'multipart/related; boundary="' + boundary + '"',
+      },
+      body: multipartRequestBody,
+    });
+
+    return new Promise<void>((resolve, reject) => {
+      request.execute((file:any) => {
+        if (file && file.id) {
+          console.log('Fichier créé avec succès. ID du fichier:', file.id);
+          resolve();
+        } else {
+          console.error('Erreur lors de la création du fichier:', file);
+          reject(new Error('Erreur lors de la création du fichier'));
+        }
+      });
+    });
+  }
+
+  // Ajoutez d'autres méthodes pour charger, sauvegarder et supprimer des fichiers selon vos besoins
 }
