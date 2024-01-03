@@ -11,8 +11,8 @@ const config: CapacitorConfig = {
   },
   plugins: {
     'GoogleAuth': {
-      'scopes': ['profile', 'email','https://www.googleapis.com/auth/drive.file'],
-      'serverClientId': '769661539885-9fem97pe11313dqk2kbsbm8ecr50tumi.apps.googleusercontent.com',
+      'scopes': ['profile', 'email','https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.appdata'],
+      'serverClientId': '769661539885-m06ta17bqgtif99o7eeaj21hpdn9i7om.apps.googleusercontent.com',
       "forceCodeForRefreshToken": true
     }
   }

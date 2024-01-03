@@ -20,18 +20,36 @@ export class SqliteService {
   private initDatabase() {
     this.sqlite
       .create({
-        name: 'yokap1.db',
+        name: 'yokap2.db',
         location: 'default',
       })
       .then((db: SQLiteObject) => {
         this.database = db;
         this.createTables();
-        this.initializeMainBalance(); // Ajoutez cette ligne
+        this.initializeMainBalance(); 
       })
       .catch((error) => {
         console.error('Erreur lors de la création de la base de données', error);
       });
   }
+
+  async getChartData(): Promise<{ labels: string[], data: number[] }> {
+    const types = ['withdrawal', 'income', 'borrow', 'savings', 'deposit', 'loan']; // Add other types if needed
+    const labels: string[] = [];
+    const data: number[] = [];
+   
+    for (const type of types) {
+      labels.push(type);
+      try {
+        data.push(await this.getTotalByType(type));
+      } catch (error) {
+        console.error(`Error getting total for type ${type}:`, error);
+        data.push(0); // Or whatever default value makes sense in your context
+      }
+    }
+   
+    return { labels, data };
+   }
 
   async getAllTransactionHistory(): Promise<{ type: string, transactions: any[] }[]> {
     try {
@@ -173,7 +191,7 @@ export class SqliteService {
               async () => {
                 console.log('Opération ajoutée avec succès');
    
-                // Update the main balance
+                
                 const updatedBalance = (type === 'deposit' || type === 'borrow') ? (await this.getMainBalance()) + amount : (await this.getMainBalance()) - amount;
                 this.updateMainBalance(updatedBalance);
                 this.presentAlert('Opération réussie', 'Opération ajoutée avec succès');
