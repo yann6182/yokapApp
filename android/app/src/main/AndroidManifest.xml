@@ -20,6 +20,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="http" android:host="localhost" android:path="/callback" />
+
             </intent-filter>
 
         </activity>
@@ -36,6 +42,7 @@
     </application>
 
     <!-- Permissions -->
+    <uses-permission android:name="com.google.android.gms.auth.api.signin.STORAGE_RELAY" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.gms.auth.api.signin.STORAGE_RELAY" />
