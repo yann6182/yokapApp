@@ -1,7 +1,8 @@
 {
-  "name": "yokapApp",
+  "name": "yokap",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

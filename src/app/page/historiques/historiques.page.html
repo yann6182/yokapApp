@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'history.title' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let operation of operations" class="history-card">
+      <ion-card-header>
+        <ion-icon [name]="getIconName(operation.type)" class="history-icon"></ion-icon>
+        {{ operation.type }}
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-label>
+          <h3>{{ operation.label }}</h3>
+          <p>Montant: {{ operation.amount | currency:'XAF' }}</p>
+          <p>Date: {{ operation.date }}</p>
+        </ion-label>
+        <ion-badge color="primary" class="history-badge">{{ operation.type }}</ion-badge>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

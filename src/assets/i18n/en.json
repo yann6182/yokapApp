@@ -1,0 +1,51 @@
+{
+  "greeting": "Hello {{userName}}",
+    "dashboard": {
+        "main_balance": "Main Balance",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "loan": "Loan",
+        "lending": "Lending",
+        "savings": "Savings"
+    },
+  "totals": {
+      "deposit": "Deposit",
+      "withdrawal": "Withdrawal",
+      "loan": "Loan",
+      "lending": "Lending",
+      "savings": "Savings"
+  },
+  "operation_modal": {
+      "title": "{{ operation.type }}",
+      "operation_type": "Operation Type",
+      "label": "Label",
+      "amount": "Amount",
+      "save_button": "Save"
+  },
+  "history": {
+      "title": "History"
+  },
+  "operations": {
+      "title": "Operations",
+      "amount": "Amount",
+      "date": "Date"
+  },
+  "tabs": {
+      "dashboard": "Dashboard",
+      "operations": "Operations",
+      "history": "History",
+      "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "balance": "Balance",
+    "export_to_google_drive": "Export to Google Drive"
+},
+"language_settings": {
+    "title": "Language Settings",
+    "english": "English",
+    "french": "French",
+    "chinese": "Chinese",
+    "russian": "Russian"
+}
+}

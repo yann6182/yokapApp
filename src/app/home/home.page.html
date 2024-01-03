@@ -1,1 +1,20 @@
-
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="bg-light">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>{{ 'tabs.dashboard' | translate }}</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="operations">
+      <ion-icon name="extension-puzzle-outline"></ion-icon>
+      <ion-label>{{ 'tabs.operations' | translate }}</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="historiques">
+      <ion-icon name="analytics-outline"></ion-icon>
+      <ion-label>{{ 'tabs.history' | translate }}</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="reglages">
+      <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>{{ 'tabs.settings' | translate }}</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

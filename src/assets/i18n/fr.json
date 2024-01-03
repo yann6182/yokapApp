@@ -1,0 +1,52 @@
+{
+  "greeting": "Bonjour {{userName}}",
+    "dashboard": {
+        "main_balance": "Solde Principal",
+        "deposit": "Dépôt",
+        "withdrawal": "Retrait",
+        "loan": "Emprunt",
+        "lending": "Prêt",
+        "savings": "Épargne"
+    },
+  "totals": {
+      "deposit": "Dépôt",
+      "withdrawal": "Retrait",
+      "loan": "Emprunt",
+      "lending": "Prêt",
+      "savings": "Épargne"
+  },
+  "operation_modal": {
+      "title": "{{ operation.type }}",
+      "operation_type": "Type d'Opération",
+      "label": "Libellé",
+      "amount": "Montant",
+      "save_button": "Enregistrer"
+  },
+  "history": {
+      "title": "Historiques"
+  },
+  "operations": {
+      "title": "Opérations",
+      "amount": "Montant",
+      "date": "Date"
+  },
+  "tabs": {
+      "dashboard": "Tableau de Bord",
+      "operations": "Opérations",
+      "history": "Historiques",
+      "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "balance": "Solde",
+    "export_to_google_drive": "Exporter vers Google Drive"
+},
+"language_settings": {
+    "title": "Paramètres de Langue",
+    "english": "Anglais",
+    "french": "Français",
+    "chinese": "Chinois",
+    "russian": "Russe"
+}
+
+}

@@ -1,0 +1,51 @@
+{
+  "greeting": "Привет {{userName}}",
+    "dashboard": {
+        "main_balance": "Основной баланс",
+        "deposit": "Депозит",
+        "withdrawal": "Снятие",
+        "loan": "Заем",
+        "lending": "Кредитование",
+        "savings": "Сбережения"
+    },
+  "totals": {
+      "deposit": "Депозит",
+      "withdrawal": "Снятие",
+      "loan": "Заем",
+      "lending": "Кредитование",
+      "savings": "Сбережения"
+  },
+  "operation_modal": {
+      "title": "{{ operation.type }}",
+      "operation_type": "Тип операции",
+      "label": "Метка",
+      "amount": "Сумма",
+      "save_button": "Сохранить"
+  },
+  "history": {
+      "title": "История"
+  },
+  "operations": {
+      "title": "Операции",
+      "amount": "Сумма",
+      "date": "Дата"
+  },
+  "tabs": {
+      "dashboard": "Панель управления",
+      "operations": "Операции",
+      "history": "История",
+      "settings": "Настройки"
+  },
+  "settings": {
+    "title": "Настройки",
+    "balance": "Баланс",
+    "export_to_google_drive": "Экспорт в Google Drive"
+},
+"language_settings": {
+    "title": "Настройки языка",
+    "english": "Английский",
+    "french": "Французский",
+    "chinese": "Китайский",
+    "russian": "Русский"
+}
+}

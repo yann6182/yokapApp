@@ -1,0 +1,46 @@
+<!-- <ion-header >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>reglages</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <ion-list>
+    <ion-item >
+      <ion-label>{{ solde}}</ion-label>
+
+      <ion-note slot="end"></ion-note>
+    </ion-item>
+  </ion-list>
+
+
+
+ <button (click)="">Exporter vers Google Drive</button> -->
+
+<!-- </ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'language_settings.title' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button (click)="changeLanguage('en')">
+      <ion-label>{{ 'language_settings.english' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="changeLanguage('fr')">
+      <ion-label>{{ 'language_settings.french' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="changeLanguage('zh')">
+      <ion-label>{{ 'language_settings.chinese' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="changeLanguage('ru')">
+      <ion-label>{{ 'language_settings.russian' | translate }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

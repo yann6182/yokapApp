@@ -1,0 +1,52 @@
+{
+  "greeting": "你好 {{userName}}",
+"dashboard": {
+    "main_balance": "主要余额",
+    "deposit": "存款",
+    "withdrawal": "取款",
+    "loan": "贷款",
+    "lending": "放贷",
+    "savings": "储蓄"
+},
+  "totals": {
+      "deposit": "存款",
+      "withdrawal": "取款",
+      "loan": "贷款",
+      "lending": "放款",
+      "savings": "储蓄"
+  },
+  "operation_modal": {
+      "title": "{{ operation.type }}",
+      "operation_type": "操作类型",
+      "label": "标签",
+      "amount": "金额",
+      "save_button": "保存"
+  },
+  "history": {
+      "title": "历史记录"
+  },
+  "operations": {
+      "title": "操作",
+      "amount": "金额",
+      "date": "日期"
+  },
+  "tabs": {
+      "dashboard": "仪表板",
+      "operations": "操作",
+      "history": "历史记录",
+      "settings": "设置"
+  },
+  "settings": {
+    "title": "设置",
+    "balance": "余额",
+    "export_to_google_drive": "导出至谷歌云端硬盘"
+},
+"language_settings": {
+    "title": "语言设置",
+    "english": "英文",
+    "french": "法文",
+    "chinese": "中文",
+    "russian": "俄文"
+}
+
+}

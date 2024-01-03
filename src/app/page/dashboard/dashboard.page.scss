@@ -1,0 +1,54 @@
+.avatar-logo {
+  width: 40px; /* Ajustez la largeur comme nécessaire */
+  height: 40px; /* Ajustez la hauteur comme nécessaire */
+  border-radius: 50%; /* Pour créer une forme circulaire */
+  overflow: hidden; /* Masquer les parties de l'image qui dépassent du cercle */
+}
+
+@media only screen and (max-width: 768px) {
+  .ion-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+ion-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+ion-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    flex-grow: 1;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.total-card ion-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  ion-icon {
+    font-size: 1.5em;
+    margin-left: 10px;
+  }
+}
+
+.total-card ion-badge {
+  --padding-start: 5px;
+  --padding-end: 5px;
+}
+
+
+.total-card ion-item ion-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

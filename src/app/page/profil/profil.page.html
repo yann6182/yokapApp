@@ -1,0 +1,24 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'profile.title' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div *ngIf="totals">
+    <h3>Totaux par Type d'Opération</h3>
+    <ul>
+      <li>Dépôt: {{ totals.Depot }}</li>
+      <li>Retrait: {{ totals.Retrait }}</li>
+      <li>Pret: {{ totals.Pret }}</li>
+      <li>Emprunt: {{ totals.Emprunt }}</li>
+      <li>Epargne {{ totals.Epargne }}</li>
+
+
+
+    </ul>
+  </div>
+</ion-content>

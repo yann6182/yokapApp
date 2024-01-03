@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { TabsPage } from './tabs/tabs.page';
-import { DashboardPage } from './dashboard/dashboard.page';
-import { AddOperationPage } from './add-operation/add-operation.page';
-import { HistoriquePage } from './historique/historique.page';
-import { SauvegardePage } from './sauvegarde/sauvegarde.page';
+import { IonicNativePlugin } from '@ionic-native/core';
+import { DashboardPage } from './page/dashboard/dashboard.page';
+import { HomePage } from './home/home.page';
+import { HistoriquesPage } from './page/historiques/historiques.page';
+import { ReglagesPage } from './page/reglages/reglages.page';
 
 const routes: Routes = [
-  
   {
-    path: 'tabs',
-    component: TabsPage,
+    path: 'home',
+    component: HomePage,
     children: [
       {
         path: 'dashboard',
@@ -22,95 +21,80 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'add-operation',
+        path: 'historiques',
         children: [
           {
             path: '',
-            component: AddOperationPage,
-          },
-        ],
-      },{
-        path: 'historique',
-        children: [
-          {
-            path: '',
-            component: HistoriquePage,
-          },
-        ],
-      },{
-        path: 'sauvegarde',
-        children: [
-          {
-            path: '',
-            component: SauvegardePage,
+            component: HistoriquesPage,
           },
         ],
       },
-      
-     
+      {
+        path: 'reglages',
+        children: [
+          {
+            path: '',
+            component: ReglagesPage,
+          },
+        ],
+      },
+
 
       {
         path: '',
-        redirectTo: '/tabs/dashboard',
+        redirectTo: '/home/dashboard',
         pathMatch: 'full',
       },
     ],
   },
-
   {
     path: '',
-    redirectTo: '/tabs/dashboard',
+    redirectTo: 'slides',
     pathMatch: 'full',
-  },
+  }
+  ,
   {
-    path: 'tabs/dashboard',
+    path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
-    redirectTo: 'tabs/dashboard',
+    redirectTo: 'home/dashboard',
     pathMatch: 'full'
   },
   {
-    path: 'tabs/add-operation',
-    loadChildren: () => import('./add-operation/add-operation.module').then( m => m.AddOperationPageModule)
-  },
-  {
-    path: 'tabs/historique',
-    loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
-  },
-  {
-    path: 'tabs/sauvegarde',
-    loadChildren: () => import('./sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
-  },
- 
-  {
-    path: 'add-operation',
-    loadChildren: () => import('./add-operation/add-operation.module').then( m => m.AddOperationPageModule)
-  },
-  {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+    path: 'dashboard/historiques',
+    loadChildren: () => import('./page/historiques/historiques.module').then( m => m.HistoriquesPageModule)
   },
   {
-    path: 'historique',
-    loadChildren: () => import('./historique/historique.module').then( m => m.HistoriquePageModule)
+    path: 'dashboard/reglages',
+    loadChildren: () => import('./page/reglages/reglages.module').then( m => m.ReglagesPageModule)
   },
   {
-    path: 'sauvegarde',
-    loadChildren: () => import('./sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
-  }
-  
-  
+    path: 'dashboard/operations',
+    loadChildren: () => import('./page/operations/operations.module').then( m => m.OperationsPageModule)
+  },
+  {
+    path: 'operation-modal',
+    loadChildren: () => import('./page/operation-modal/operation-modal.module').then( m => m.OperationModalPageModule)
+  },
+  {
+    path: 'profil',
+    loadChildren: () => import('./page/profil/profil.module').then( m => m.ProfilPageModule)
+  },
+  {
+    path: 'slides',
+    loadChildren: () => import('./page/slides/slides.module').then( m => m.SlidesPageModule)
+  },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
   exports: [RouterModule]
 })

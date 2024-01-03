@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ operation.type }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-badge slot="end">{{ soldePrincipal | currency:'XAF' }}</ion-badge>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label position="stacked">Type d'Opération</ion-label>
+    <ion-input [(ngModel)]="operation.type" readonly></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Libellé</ion-label>
+    <ion-input [(ngModel)]="operation.label" placeholder="Libellé"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Montant</ion-label>
+    <ion-input type="number" [(ngModel)]="operation.amount" placeholder="Montant"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="saveOperation()">Enregistrer</ion-button>
+</ion-content>

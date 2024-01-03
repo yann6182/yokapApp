@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">yokapApp</string>
-    <string name="title_activity_main">yokapApp</string>
+    <string name="app_name">yokap</string>
+    <string name="title_activity_main">yokap</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
-    <string name="server_client_id">769661539885-m06ta17bqgtif99o7eeaj21hpdn9i7om.apps.googleusercontent.com</string>
-
 </resources>
