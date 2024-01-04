@@ -24,7 +24,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:scheme="http" android:host="localhost" android:path="/callback" />
+                <data android:scheme="http" android:host="localhost"  />
 
             </intent-filter>
 
