@@ -8,17 +8,19 @@
 </ion-header>
 
 <ion-content >
-  <div *ngIf="totals">
-    <h3>Totaux par Type d'Opération</h3>
-    <ul>
-      <li>Dépôt: {{ totals.Depot }}</li>
-      <li>Retrait: {{ totals.Retrait }}</li>
-      <li>Pret: {{ totals.Pret }}</li>
-      <li>Emprunt: {{ totals.Emprunt }}</li>
-      <li>Epargne {{ totals.Epargne }}</li>
-
-
-
-    </ul>
-  </div>
+  <ion-card-content>
+    <div *ngIf="totals">
+      <h3>Totaux par Type d'Opération</h3>
+      <ul>
+        <li>Dépôt: {{ totals.Depot }}</li>
+        <li>Retrait: {{ totals.Retrait }}</li>
+        <li>Pret: {{ totals.Pret }}</li>
+        <li>Emprunt: {{ totals.Emprunt }}</li>
+        <li>Epargne {{ totals.Epargne }}</li>
+      </ul>
+    </div>
+    <ion-button (click)="goToSlides()">Go to Slides</ion-button>
+    
+  </ion-card-content>
+  
 </ion-content>

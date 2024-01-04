@@ -85,11 +85,11 @@ export class OperationsPage  {
 
   loadOperations() {
     this.sqlsev.getOperations().then(data => {
-      this.operations = data;
+      this.operations = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }).catch(err => {
       console.error('Erreur lors du chargement des opérations', err);
     });
-  }
+   }
 
   async getSolde() {
     try {

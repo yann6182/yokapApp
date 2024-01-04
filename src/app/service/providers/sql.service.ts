@@ -121,7 +121,113 @@ export class SqlService {
   }
 
 
+  async exportData(): Promise<string> {
+    try {
+      const transactions = await this.getAllTransactionHistory();
+      const mainBalance = await this.getMainBalance();
+      const totalByType: { [type: string]: number } = {};
+  
+      // Obtenez les totaux pour chaque type de transaction
+      for (const type of this.operationTypes) {
+        totalByType[type] = await this.getTotalByType(type);
+      }
+  
+      // Retournez les données dans le format JSON
+      const exportData = JSON.stringify({
+        transactions,
+        mainBalance,
+        totalByType,
+      });
+  
+      return exportData;
+    } catch (error) {
+      console.error('Erreur lors de la collecte des données d\'exportation', error);
+      throw error;
+    }
+  }
 
+  async getAllTransactionHistory(): Promise<{ type: string, transactions: any[] }[]> {
+    try {
+      const getAllHistoryQuery = `
+        SELECT * FROM transaction_history
+      `;
+  
+      if (this.db) {
+        const result = await this.db.executeSql(getAllHistoryQuery, []);
+        const history: { type: string, transactions: any[] }[] = [];
+  
+        for (let i = 0; i < result.rows.length; i++) {
+          const transaction = result.rows.item(i);
+          const type = transaction.type;
+  
+          // Ajoutez la propriété 'type' à chaque transaction
+          transaction.transactionType = type;
+  
+          // Vérifiez si le type existe déjà dans l'historique
+          const existingType = history.find(item => item.type === type);
+  
+          if (existingType) {
+            // Ajoutez la transaction à un type existant
+            existingType.transactions.push(transaction);
+          } else {
+            // Ajoutez un nouveau type avec la transaction
+            history.push({ type, transactions: [transaction] });
+          }
+        }
+  
+        return history;
+      } else {
+        console.error('Database is not initialized');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching all transaction history:', error);
+      return [];
+    }
+  }
+
+  async getMainBalance(): Promise<number> {
+    const incomeTotal = await this.calculateTotal('income');
+    const loanTotal = await this.calculateTotal('loan');
+    const retraittotal = await this.calculateTotal('withdrawal');
+    const empruntTotal = await this.calculateTotal('borrow');
+    // Solde principal = total income - total loan
+    const mainBalance = (incomeTotal +empruntTotal )-(retraittotal+loanTotal);
+  
+    return mainBalance;
+  }
+
+  async calculateTotal(type: string): Promise<number> {
+    const calculateTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(calculateTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
+    }
+  }
+
+  async getTotalByType(type: string): Promise<number> {
+    const getTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(getTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
+    }
+  }
+  
+    
+  
+    
 
 
 }

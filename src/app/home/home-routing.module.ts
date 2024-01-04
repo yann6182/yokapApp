@@ -11,6 +11,14 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: () => import('../page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
       },
+      {
+        path: 'sauvegarde',
+        loadChildren: () => import('../page/sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
+      },
+      {
+        path: 'profil/reglages',
+        loadChildren: () => import('../page/reglages/reglages.module').then( m => m.ReglagesPageModule)
+      },
 
 
       {
