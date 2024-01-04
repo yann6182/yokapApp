@@ -13,7 +13,6 @@ export class GoogleDriveService {
   private readonly apiUrl = 'https://www.googleapis.com/drive/v3/files';
 
   constructor(private http: HttpClient) {
-    // Chargez l'API Google lors de l'initialisation du service
     gapi.load('client:auth2', () => this.initClient());
   }
 
@@ -21,7 +20,7 @@ export class GoogleDriveService {
     try {
       await gapi.client.init({
         apiKey: 'AIzaSyBzrOYT11qkGaScynt2GJ-o5aJHWV8Imvc',
-        clientId: '769661539885-9fem97pe11313dqk2kbsbm8ecr50tumi.apps.googleusercontent.com',
+        clientId: '769661539885-9feupi81omge5ksafbn3664j08efouqm.apps.googleusercontent.com',
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
         scope: 'https://www.googleapis.com/auth/drive.file',
       });
@@ -31,7 +30,6 @@ export class GoogleDriveService {
     }
   }
   authenticate(): Promise<void> {
-    // Ajoutez votre logique d'authentification ici
     return new Promise<void>((resolve, reject) => {
       gapi.auth2.getAuthInstance().signIn().then(
         (user:any) => {
