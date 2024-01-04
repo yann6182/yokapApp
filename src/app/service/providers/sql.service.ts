@@ -85,8 +85,62 @@ export class SqlService {
         return 0;
       });
   }
+  async getDailyTotals(): Promise<any[]> {
+    const today = new Date().toISOString().split('T')[0];
+    const getDailyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date = ? GROUP BY type
+    `;
 
+    if (this.db) {
+      const result = await this.db.executeSql(getDailyTotalsQuery, [today]);
+      const dailyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        dailyTotals.push(result.rows.item(i));
+      }
+      return dailyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
 
+  async getWeeklyTotals(): Promise<any[]> {
+    const today = new Date();
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    const getWeeklyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date >= ? GROUP BY type
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(getWeeklyTotalsQuery, [startOfWeek.toISOString().split('T')[0]]);
+      const weeklyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        weeklyTotals.push(result.rows.item(i));
+      }
+      return weeklyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
+  async getYearlyTotals(): Promise<any[]> {
+    const yearStart = new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0];
+    const getYearlyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date >= ? GROUP BY type
+    `;
+  
+    if (this.db) {
+      const result = await this.db.executeSql(getYearlyTotalsQuery, [yearStart]);
+      const yearlyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        yearlyTotals.push(result.rows.item(i));
+      }
+      return yearlyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
 
   getTotalsByOperationType(): Promise<Totals> {
     return this.db.executeSql('SELECT type, amount FROM operations', [])

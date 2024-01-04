@@ -30,7 +30,6 @@ export class SlidesPage  {
   ) {}
 
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   async ngOnInit() {
     if (!this.userserv.isInitialSetupDone()) {
       await this.showLanguageSelector();
@@ -41,12 +40,19 @@ export class SlidesPage  {
     this.loadUserSettings();
 
   }
+  ionViewWillEnter() {
+    this.loadUserSettings();
+
+  }
+  goToprofil() {
+    this.router.navigate(['/profil']);
+  }
 
   onSlideChange() {
     this.slides.isEnd().then((isEnd: any) => {
       if (isEnd) {
         this.showSlides = false; // Cache les slides
-        this.navigateToDashboard(); // Navigue vers le tableau de bord
+        this.navigateToDashboard(); 
       }
     });
   }
@@ -116,8 +122,7 @@ export class SlidesPage  {
     this.userserv.setLanguage(this.language);
     this.translateService.use(this.language);
 
-    // Vous pouvez ici rafraîchir des composants ou recharger des données si nécessaire
-    // Par exemple, en émettant un événement ou en utilisant un mécanisme de notification
+   
   }
 
 }

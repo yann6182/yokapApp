@@ -34,6 +34,48 @@
       </ion-col>
     </ion-row>
 
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux Hebdomadaires</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let weeklyTotal of weeklyTotals" lines="none">
+            <ion-label>{{ weeklyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ weeklyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux Journaliers</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let dailyTotal of dailyTotals" lines="none">
+            <ion-label>{{ dailyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ dailyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux annuels</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let yearlyTotal of yearlyTotals" lines="none">
+            <ion-label>{{ yearlyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ yearlyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
     <!-- Cartes pour les totaux -->
     <ion-row *ngIf="totals">
       <!-- Carte pour les dépôts -->
