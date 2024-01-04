@@ -30,6 +30,7 @@ export class SauvegardePage {
 
   async exportDataToDrive() {
     try {
+      this.googleDriveService.authenticate();
 
       // Vérifier si l'utilisateur est connecté
       if (this.googleDriveService.isAuthenticated()) {

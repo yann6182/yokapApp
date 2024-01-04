@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SqlService } from 'src/app/service/providers/sql.service';
 import { Operation } from 'src/app/models/operations';
 import { TranslateService } from '@ngx-translate/core';
-import { ThemeService } from 'src/app/service/theme.service'; 
+import { ThemeService } from 'src/app/service/theme.service';
 import { AlertController } from '@ionic/angular';
 import { GoogleDriveService } from 'src/app/service/google-drive.service';
 
@@ -16,12 +16,12 @@ export class ReglagesPage implements OnInit {
   public themeColor = [
     { name: 'Default', class: 'default' },
     { name: 'Dark', class: 'dark-theme' },
-    
-   ];
-   
+
+  ];
+
 
   public selectTheme;
-  
+
   dynamicTheme() {
     this.theme.activeTheme(this.selectTheme);
   }
@@ -29,7 +29,7 @@ export class ReglagesPage implements OnInit {
   operations: Operation[] = [];
   solde: number = 0;
 
-  constructor(private sqlserv: SqlService,private translate:TranslateService,  private theme: ThemeService,     private alertController: AlertController, private googleDriveService : GoogleDriveService, private sqliteService : SqlService) {
+  constructor(private sqlserv: SqlService, private translate: TranslateService, private theme: ThemeService, private alertController: AlertController, private googleDriveService: GoogleDriveService, private sqliteService: SqlService) {
     this.selectTheme = 'default';
     this.dynamicTheme();
     this.translate.setDefaultLang('en');
@@ -45,7 +45,7 @@ export class ReglagesPage implements OnInit {
   async doLogin() {
     try {
       // Attendre l'authentification avec Google Drive
-       this.googleDriveService.authenticate();
+      this.googleDriveService.authenticate();
 
       // L'utilisateur s'est connecté avec succès, appelez à nouveau la méthode d'exportation
       await this.exportDataToDrive();
@@ -57,6 +57,7 @@ export class ReglagesPage implements OnInit {
 
   async exportDataToDrive() {
     try {
+      this.googleDriveService.authenticate();
 
       // Vérifier si l'utilisateur est connecté
       if (this.googleDriveService.isAuthenticated()) {
@@ -65,7 +66,7 @@ export class ReglagesPage implements OnInit {
 
         if (exportData) {
           // Appeler la méthode pour télécharger les données vers Google Drive
-          const fileId = await this.googleDriveService.createFileWithJSONContent('yokap' ,exportData);
+          const fileId = await this.googleDriveService.createFileWithJSONContent('yokap', exportData);
 
           // Afficher un message de succès à l'utilisateur
           console.log('Données exportées avec succès vers Google Drive. ID du fichier:', fileId);
