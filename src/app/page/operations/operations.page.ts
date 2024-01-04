@@ -3,6 +3,7 @@ import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Operation } from 'src/app/models/operations';
 import { SqlService } from 'src/app/service/providers/sql.service';
 import { OperationModalPage } from '../operation-modal/operation-modal.page';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-operations',
@@ -14,7 +15,10 @@ export class OperationsPage  {
   soldePrincipal: number = 0;
 
 
-  constructor(private sqlsev: SqlService,private modalController: ModalController,private actionSheetController: ActionSheetController) {}
+  constructor(private sqlsev: SqlService,
+              private modalController: ModalController,
+              private actionSheetController: ActionSheetController,
+              private translateService:TranslateService) {}
 
 
   ionViewWillEnter() {
@@ -24,40 +28,40 @@ export class OperationsPage  {
 
   async openModal() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Operation ',
+      header: this.translateService.instant('operations.header'), // Traduction pour l'en-tête
       buttons: [
         {
-          text: 'Depot',
+          text: this.translateService.instant('operations.deposit'),
           handler: () => {
             this.presentModal('Depot');
           },
         },
         {
-          text: 'Retrait',
+          text: this.translateService.instant('operations.withdrawal'),
           handler: () => {
             this.presentModal('Retrait');
           },
         },
         {
-          text: 'Pret',
+          text: this.translateService.instant('operations.loan'),
           handler: () => {
             this.presentModal('Pret');
           },
         },
         {
-          text: 'Emprunt',
+          text: this.translateService.instant('operations.borrowing'),
           handler: () => {
             this.presentModal('Emprunt');
           },
         },
         {
-          text: 'Epargne',
+          text: this.translateService.instant('operations.savings'),
           handler: () => {
             this.presentModal('Epargne');
           },
         },
         {
-          text: 'Cancel',
+          text: this.translateService.instant('buttons.cancel'),
           role: 'cancel',
         },
       ],
@@ -65,6 +69,7 @@ export class OperationsPage  {
 
     await actionSheet.present();
   }
+
 
   async presentModal(operationType: string) {
     const modal = await this.modalController.create({

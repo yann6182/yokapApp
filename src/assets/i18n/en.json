@@ -1,12 +1,19 @@
 {
   "greeting": "Hello {{userName}}",
     "dashboard": {
+
+        "title": "Dashboard",
         "main_balance": "Main Balance",
+        "weekly_totals": "Weekly Totals",
+        "daily_totals": "Daily Totals",
+        "yearly_totals": "Annual Totals",
         "deposit": "Deposit",
         "withdrawal": "Withdrawal",
         "loan": "Loan",
         "lending": "Lending",
-        "savings": "Savings"
+        "savings": "Savings",
+        "chart_title": "Statistics Chart",
+        "greeting": "Hello, {{userName}}"
     },
   "totals": {
       "deposit": "Deposit",
@@ -23,12 +30,23 @@
       "save_button": "Save"
   },
   "history": {
-      "title": "History"
+    "title": "History",
+    "amount": "Amount",
+    "date": "Date"
   },
   "operations": {
-      "title": "Operations",
-      "amount": "Amount",
-      "date": "Date"
+    "title": "Operation: {{value}}",
+    "operationType": "Type of Operation",
+    "label": "Label",
+    "labelPlaceholder": "Enter label",
+    "amount": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "header": "Operation",
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "loan": "Loan",
+    "borrowing": "Borrowing",
+    "savings": "Savings"
   },
   "tabs": {
       "dashboard": "Dashboard",
@@ -39,7 +57,11 @@
   "settings": {
     "title": "Settings",
     "balance": "Balance",
-    "export_to_google_drive": "Export to Google Drive"
+    "export_to_google_drive": "Export to Google Drive",
+    "select_theme": "Select Theme",
+    "theme_preview": "Theme Preview",
+    "select_language": "Select Language",
+    "language_settings": "Language Settings"
 },
 "language_settings": {
     "title": "Language Settings",
@@ -47,5 +69,11 @@
     "french": "French",
     "chinese": "Chinese",
     "russian": "Russian"
+},
+"buttons": {
+  "save": "Save",
+  "cancel": "Cancel",
+  "export_drive": "Export to Google Drive"
 }
+
 }

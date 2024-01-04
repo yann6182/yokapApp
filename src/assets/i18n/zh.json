@@ -1,12 +1,18 @@
 {
   "greeting": "你好 {{userName}}",
-"dashboard": {
+  "dashboard": {
+    "title": "仪表板",
     "main_balance": "主要余额",
+    "weekly_totals": "每周合计",
+    "daily_totals": "每日合计",
+    "yearly_totals": "年度合计",
     "deposit": "存款",
     "withdrawal": "取款",
     "loan": "贷款",
     "lending": "放贷",
-    "savings": "储蓄"
+    "savings": "储蓄",
+    "chart_title": "统计图表",
+    "greeting": "你好, {{userName}}"
 },
   "totals": {
       "deposit": "存款",
@@ -20,15 +26,38 @@
       "operation_type": "操作类型",
       "label": "标签",
       "amount": "金额",
-      "save_button": "保存"
+      "save_button": "保存",
+      "operationType": "操作类型",
+      "labelPlaceholder": "输入标签",
+      "amountPlaceholder": "输入金额",
+      "header": "操作",
+      "deposit": "存款",
+      "withdrawal": "取款",
+      "loan": "贷款",
+      "borrowing": "借贷",
+      "savings": "储蓄"
   },
   "history": {
-      "title": "历史记录"
+    "title": "历史记录",
+    "amount": "金额",
+    "date": "日期"
   },
   "operations": {
-      "title": "操作",
-      "amount": "金额",
-      "date": "日期"
+    "title": "{{ operation.type }}",
+    "operation_type": "操作类型",
+    "label": "标签",
+    "amount": "金额",
+    "date": "日期",
+    "save_button": "保存",
+    "operationType": "操作类型",
+    "labelPlaceholder": "输入标签",
+    "amountPlaceholder": "输入金额",
+    "header": "操作",
+    "deposit": "存款",
+    "withdrawal": "取款",
+    "loan": "贷款",
+    "borrowing": "借贷",
+    "savings": "储蓄"
   },
   "tabs": {
       "dashboard": "仪表板",
@@ -39,7 +68,11 @@
   "settings": {
     "title": "设置",
     "balance": "余额",
-    "export_to_google_drive": "导出至谷歌云端硬盘"
+    "export_to_google_drive": "导出至谷歌云端硬盘",
+    "select_theme": "选择主题",
+    "theme_preview": "主题预览",
+    "select_language": "选择语言",
+    "language_settings": "语言设置"
 },
 "language_settings": {
     "title": "语言设置",
@@ -47,6 +80,10 @@
     "french": "法文",
     "chinese": "中文",
     "russian": "俄文"
+},
+"buttons": {
+  "cancel": "取消",
+  "save": "保存",
+  "export_drive": "导出到谷歌云端硬盘"
 }
-
 }

@@ -1,12 +1,18 @@
 {
   "greeting": "Bonjour {{userName}}",
     "dashboard": {
-        "main_balance": "Solde Principal",
-        "deposit": "Dépôt",
-        "withdrawal": "Retrait",
-        "loan": "Emprunt",
-        "lending": "Prêt",
-        "savings": "Épargne"
+      "title": "Tableau de Bord",
+      "main_balance": "Solde Principal",
+      "weekly_totals": "Totaux Hebdomadaires",
+      "daily_totals": "Totaux Journaliers",
+      "yearly_totals": "Totaux Annuels",
+      "deposit": "Dépôt",
+      "withdrawal": "Retrait",
+      "loan": "Prêt",
+      "lending": "Prêt Accordé",
+      "savings": "Épargne",
+      "chart_title": "Graphique des Statistiques",
+      "greeting": "Bonjour, {{userName}}"
     },
   "totals": {
       "deposit": "Dépôt",
@@ -23,14 +29,26 @@
       "save_button": "Enregistrer"
   },
   "history": {
-      "title": "Historiques"
+    "title": "Historique",
+    "amount": "Montant",
+    "date": "Date"
   },
   "operations": {
-    
-      "title": "Opérations",
-      "amount": "Montant",
-      "date": "Date"
-      
+
+    "title": "Opération: {{value}}",
+    "operationType": "Type d'Opération",
+    "label": "Libellé",
+    "labelPlaceholder": "Entrez le libellé",
+    "amount": "Montant",
+    "amountPlaceholder": "Entrez le montant",
+    "date": "Date",
+    "header": "Opération",
+    "deposit": "Dépôt",
+    "withdrawal": "Retrait",
+    "loan": "Prêt",
+    "borrowing": "Emprunt",
+    "savings": "Épargne"
+
   },
   "tabs": {
       "dashboard": "Tableau de Bord",
@@ -41,7 +59,12 @@
   "settings": {
     "title": "Paramètres",
     "balance": "Solde",
-    "export_to_google_drive": "Exporter vers Google Drive"
+    "export_to_google_drive": "Exporter vers Google Drive",
+    "select_theme": "Sélectionnez le Thème",
+    "theme_preview": "Aperçu du Thème",
+    "select_language": "Choisir la Langue",
+    "language_settings": "Paramètres de Langue"
+
 },
 "language_settings": {
     "title": "Paramètres de Langue",
@@ -49,6 +72,12 @@
     "french": "Français",
     "chinese": "Chinois",
     "russian": "Russe"
+},
+"buttons": {
+  "cancel": "Annuler",
+  "save": "sauvegarder",
+  "export_drive": "Exporter vers Google Drive"
 }
+
 
 }

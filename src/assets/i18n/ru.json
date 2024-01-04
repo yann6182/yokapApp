@@ -1,51 +1,78 @@
 {
   "greeting": "Привет {{userName}}",
-    "dashboard": {
-        "main_balance": "Основной баланс",
-        "deposit": "Депозит",
-        "withdrawal": "Снятие",
-        "loan": "Заем",
-        "lending": "Кредитование",
-        "savings": "Сбережения"
-    },
+  "dashboard": {
+    "title": "Приборная панель",
+    "main_balance": "Основной баланс",
+    "weekly_totals": "Еженедельные итоги",
+    "daily_totals": "Ежедневные итоги",
+    "yearly_totals": "Годовые итоги",
+    "deposit": "Депозит",
+    "withdrawal": "Снятие",
+    "loan": "Заем",
+    "lending": "Кредитование",
+    "savings": "Сбережения",
+    "chart_title": "Диаграмма статистики",
+    "greeting": "Привет, {{userName}}"
+  },
   "totals": {
-      "deposit": "Депозит",
-      "withdrawal": "Снятие",
-      "loan": "Заем",
-      "lending": "Кредитование",
-      "savings": "Сбережения"
+    "deposit": "Депозит",
+    "withdrawal": "Снятие",
+    "loan": "Заем",
+    "lending": "Кредитование",
+    "savings": "Сбережения"
   },
   "operation_modal": {
-      "title": "{{ operation.type }}",
-      "operation_type": "Тип операции",
-      "label": "Метка",
-      "amount": "Сумма",
-      "save_button": "Сохранить"
+    "title": "{{ operation.type }}",
+    "operation_type": "Тип операции",
+    "label": "Метка",
+    "amount": "Сумма",
+    "save_button": "Сохранить"
   },
   "history": {
-      "title": "История"
+    "title": "История",
+    "amount": "Сумма",
+    "date": "Дата"
   },
   "operations": {
-      "title": "Операции",
-      "amount": "Сумма",
-      "date": "Дата"
+    "title": "Операции",
+    "amount": "Сумма",
+    "date": "Дата",
+    "operationType": "Тип операции",
+    "label": "Метка",
+    "labelPlaceholder": "Введите метку",
+    "amountPlaceholder": "Введите сумму",
+    "header": "Операция",
+    "deposit": "Депозит",
+    "withdrawal": "Снятие",
+    "loan": "Кредит",
+    "borrowing": "Заем",
+    "savings": "Сбережения"
   },
   "tabs": {
-      "dashboard": "Панель управления",
-      "operations": "Операции",
-      "history": "История",
-      "settings": "Настройки"
+    "dashboard": "Панель управления",
+    "operations": "Операции",
+    "history": "История",
+    "settings": "Настройки"
   },
   "settings": {
     "title": "Настройки",
     "balance": "Баланс",
-    "export_to_google_drive": "Экспорт в Google Drive"
-},
-"language_settings": {
+    "export_to_google_drive": "Экспорт в Google Drive",
+    "select_theme": "Выбор темы",
+    "theme_preview": "Предпросмотр темы",
+    "select_language": "Выбрать язык",
+    "language_settings": "Языковые настройки"
+  },
+  "language_settings": {
     "title": "Настройки языка",
     "english": "Английский",
     "french": "Французский",
     "chinese": "Китайский",
     "russian": "Русский"
-}
+  },
+  "buttons": {
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "export_drive": "Экспорт в Google Drive"
+  }
 }

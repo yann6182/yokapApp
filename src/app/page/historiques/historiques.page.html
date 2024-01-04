@@ -12,16 +12,16 @@
     <ion-card *ngFor="let operation of operations" class="history-card">
       <ion-card-header>
         <ion-icon [name]="getIconName(operation.type)" class="history-icon"></ion-icon>
-        {{ operation.type }}
+        {{ operation.type | translate }}
       </ion-card-header>
 
       <ion-card-content>
         <ion-label>
           <h3>{{ operation.label }}</h3>
-          <p>Montant: {{ operation.amount | currency:'XAF' }}</p>
-          <p>Date: {{ operation.date }}</p>
+          <p>{{ 'history.amount' | translate }}: {{ operation.amount | currency:'XAF' }}</p>
+          <p>{{ 'history.date' | translate }}: {{ operation.date }}</p>
         </ion-label>
-        <ion-badge color="primary" class="history-badge">{{ operation.type }}</ion-badge>
+        <ion-badge color="primary" class="history-badge">{{ operation.type | translate }}</ion-badge>
       </ion-card-content>
     </ion-card>
   </ion-list>

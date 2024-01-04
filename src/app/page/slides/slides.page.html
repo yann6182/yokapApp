@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button (click)="goToprofil()"></ion-back-button>
-    </ion-buttons>
     <ion-title>configuration</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,10 +18,13 @@
       <ion-select [(ngModel)]="language" (ionChange)="changeLanguage()">
         <ion-select-option value="fr">Français</ion-select-option>
         <ion-select-option value="en">English</ion-select-option>
+        <!-- Ajoutez d'autres options de langue ici si nécessaire -->
       </ion-select>
     </ion-item>
   </ion-list>
 
+  <!-- Bouton pour enregistrer les modifications -->
   <ion-button expand="full" (click)="saveSettings()">Enregistrer les modifications</ion-button>
+  <ion-button expand="full" (click)="navigateToDashboard()">menu</ion-button>
 
 </ion-content>

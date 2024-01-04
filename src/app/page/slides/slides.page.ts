@@ -30,6 +30,7 @@ export class SlidesPage  {
   ) {}
 
 
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   async ngOnInit() {
     if (!this.userserv.isInitialSetupDone()) {
       await this.showLanguageSelector();
@@ -52,7 +53,7 @@ export class SlidesPage  {
     this.slides.isEnd().then((isEnd: any) => {
       if (isEnd) {
         this.showSlides = false; // Cache les slides
-        this.navigateToDashboard(); 
+        this.navigateToDashboard();
       }
     });
   }
@@ -122,7 +123,6 @@ export class SlidesPage  {
     this.userserv.setLanguage(this.language);
     this.translateService.use(this.language);
 
-   
-  }
 
+  }
 }

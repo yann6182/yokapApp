@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ operation.type }}</ion-title>
+    <ion-title>{{ 'operation.title' | translate:{value: operation.type} }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -11,21 +11,20 @@
 </ion-header>
 
 <ion-content>
-
   <ion-item>
-    <ion-label position="stacked">Type d'Opération</ion-label>
+    <ion-label position="stacked">{{ 'operation.operationType' | translate }}</ion-label>
     <ion-input [(ngModel)]="operation.type" readonly></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label position="stacked">Libellé</ion-label>
-    <ion-input [(ngModel)]="operation.label" placeholder="Libellé"></ion-input>
+    <ion-label position="stacked">{{ 'operation.label' | translate }}</ion-label>
+    <ion-input [(ngModel)]="operation.label" placeholder="{{ 'operation.labelPlaceholder' | translate }}"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label position="stacked">Montant</ion-label>
-    <ion-input type="number" [(ngModel)]="operation.amount" placeholder="Montant"></ion-input>
+    <ion-label position="stacked">{{ 'operation.amount' | translate }}</ion-label>
+    <ion-input type="number" [(ngModel)]="operation.amount" placeholder="{{ 'operation.amountPlaceholder' | translate }}"></ion-input>
   </ion-item>
 
-  <ion-button expand="full" (click)="saveOperation()">Enregistrer</ion-button>
+  <ion-button expand="full" (click)="saveOperation()">{{ 'buttons.save' | translate }}</ion-button>
 </ion-content>
