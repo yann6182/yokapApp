@@ -1,46 +1,57 @@
-<!-- <ion-header >
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button routerLink="/dashboard"></ion-back-button>
     </ion-buttons>
-    <ion-title>reglages</ion-title>
+    <ion-title>{{ 'settings.title' | translate }}</ion-title>
   </ion-toolbar>
-</ion-header>
+ </ion-header>
+ 
+ <ion-content>
+ 
+ 
+ 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'settings.select_theme' | translate }}</ion-card-subtitle>
+      <ion-card-title>{{ 'settings.theme_preview' | translate }}</ion-card-title>
+    </ion-card-header>
+ 
+    <ion-card-content>
+      <ion-select color="light" class="selectTheme" [interfaceOptions]="themeColor" interface="popover"
+  [(ngModel)]="selectTheme" (ionChange)="dynamicTheme()">
+  <ion-select-option color="light" [value]="theme.class" *ngFor="let theme of themeColor;">
+   
+       {{theme.name}}
+  </ion-select-option>
+  </ion-select>
+    </ion-card-content>
+  </ion-card>
+ 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ 'settings.select_language' | translate }}</ion-card-subtitle>
+      <ion-card-title>{{ 'settings.language_settings' | translate }}</ion-card-title>
+    </ion-card-header>
+ 
+    <ion-card-content>
+      <ion-list>
+        <ion-item button (click)="changeLanguage('en')">
+          <ion-label>{{ 'language_settings.english' | translate }}</ion-label>
+        </ion-item>
+        <ion-item button (click)="changeLanguage('fr')">
+          <ion-label>{{ 'language_settings.french' | translate }}</ion-label>
+        </ion-item>
+        <ion-item button (click)="changeLanguage('zh')">
+          <ion-label>{{ 'language_settings.chinese' | translate }}</ion-label>
+        </ion-item>
+        <ion-item button (click)="changeLanguage('ru')">
+          <ion-label>{{ 'language_settings.russian' | translate }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-<ion-content >
-  <ion-list>
-    <ion-item >
-      <ion-label>{{ solde}}</ion-label>
+  <ion-button expand="full" (click)="exportDataToDrive()">Export to Google Drive</ion-button>
 
-      <ion-note slot="end"></ion-note>
-    </ion-item>
-  </ion-list>
-
-
-
- <button (click)="">Exporter vers Google Drive</button> -->
-
-<!-- </ion-content> -->
-
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ 'language_settings.title' | translate }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-list>
-    <ion-item button (click)="changeLanguage('en')">
-      <ion-label>{{ 'language_settings.english' | translate }}</ion-label>
-    </ion-item>
-    <ion-item button (click)="changeLanguage('fr')">
-      <ion-label>{{ 'language_settings.french' | translate }}</ion-label>
-    </ion-item>
-    <ion-item button (click)="changeLanguage('zh')">
-      <ion-label>{{ 'language_settings.chinese' | translate }}</ion-label>
-    </ion-item>
-    <ion-item button (click)="changeLanguage('ru')">
-      <ion-label>{{ 'language_settings.russian' | translate }}</ion-label>
-    </ion-item>
-  </ion-list>
-</ion-content>
+ </ion-content>

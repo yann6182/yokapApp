@@ -85,8 +85,62 @@ export class SqlService {
         return 0;
       });
   }
+  async getDailyTotals(): Promise<any[]> {
+    const today = new Date().toISOString().split('T')[0];
+    const getDailyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date = ? GROUP BY type
+    `;
 
+    if (this.db) {
+      const result = await this.db.executeSql(getDailyTotalsQuery, [today]);
+      const dailyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        dailyTotals.push(result.rows.item(i));
+      }
+      return dailyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
 
+  async getWeeklyTotals(): Promise<any[]> {
+    const today = new Date();
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    const getWeeklyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date >= ? GROUP BY type
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(getWeeklyTotalsQuery, [startOfWeek.toISOString().split('T')[0]]);
+      const weeklyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        weeklyTotals.push(result.rows.item(i));
+      }
+      return weeklyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
+  async getYearlyTotals(): Promise<any[]> {
+    const yearStart = new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0];
+    const getYearlyTotalsQuery = `
+      SELECT type, SUM(amount) as total FROM operations WHERE date >= ? GROUP BY type
+    `;
+  
+    if (this.db) {
+      const result = await this.db.executeSql(getYearlyTotalsQuery, [yearStart]);
+      const yearlyTotals = [];
+      for (let i = 0; i < result.rows.length; i++) {
+        yearlyTotals.push(result.rows.item(i));
+      }
+      return yearlyTotals;
+    } else {
+      console.error('Database is not initialized');
+      return [];
+    }
+  }
 
   getTotalsByOperationType(): Promise<Totals> {
     return this.db.executeSql('SELECT type, amount FROM operations', [])
@@ -121,7 +175,113 @@ export class SqlService {
   }
 
 
+  async exportData(): Promise<string> {
+    try {
+      const transactions = await this.getAllTransactionHistory();
+      const mainBalance = await this.getMainBalance();
+      const totalByType: { [type: string]: number } = {};
+  
+      // Obtenez les totaux pour chaque type de transaction
+      for (const type of this.operationTypes) {
+        totalByType[type] = await this.getTotalByType(type);
+      }
+  
+      // Retournez les données dans le format JSON
+      const exportData = JSON.stringify({
+        transactions,
+        mainBalance,
+        totalByType,
+      });
+  
+      return exportData;
+    } catch (error) {
+      console.error('Erreur lors de la collecte des données d\'exportation', error);
+      throw error;
+    }
+  }
 
+  async getAllTransactionHistory(): Promise<{ type: string, transactions: any[] }[]> {
+    try {
+      const getAllHistoryQuery = `
+        SELECT * FROM transaction_history
+      `;
+  
+      if (this.db) {
+        const result = await this.db.executeSql(getAllHistoryQuery, []);
+        const history: { type: string, transactions: any[] }[] = [];
+  
+        for (let i = 0; i < result.rows.length; i++) {
+          const transaction = result.rows.item(i);
+          const type = transaction.type;
+  
+          // Ajoutez la propriété 'type' à chaque transaction
+          transaction.transactionType = type;
+  
+          // Vérifiez si le type existe déjà dans l'historique
+          const existingType = history.find(item => item.type === type);
+  
+          if (existingType) {
+            // Ajoutez la transaction à un type existant
+            existingType.transactions.push(transaction);
+          } else {
+            // Ajoutez un nouveau type avec la transaction
+            history.push({ type, transactions: [transaction] });
+          }
+        }
+  
+        return history;
+      } else {
+        console.error('Database is not initialized');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching all transaction history:', error);
+      return [];
+    }
+  }
+
+  async getMainBalance(): Promise<number> {
+    const incomeTotal = await this.calculateTotal('income');
+    const loanTotal = await this.calculateTotal('loan');
+    const retraittotal = await this.calculateTotal('withdrawal');
+    const empruntTotal = await this.calculateTotal('borrow');
+    // Solde principal = total income - total loan
+    const mainBalance = (incomeTotal +empruntTotal )-(retraittotal+loanTotal);
+  
+    return mainBalance;
+  }
+
+  async calculateTotal(type: string): Promise<number> {
+    const calculateTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(calculateTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
+    }
+  }
+
+  async getTotalByType(type: string): Promise<number> {
+    const getTotalQuery = `
+      SELECT SUM(amount) as total FROM operations WHERE type = ?
+    `;
+
+    if (this.db) {
+      const result = await this.db.executeSql(getTotalQuery, [type]);
+      return result.rows.item(0).total || 0;
+    } else {
+      console.error('Database is not initialized');
+      return 0;
+    }
+  }
+  
+    
+  
+    
 
 
 }

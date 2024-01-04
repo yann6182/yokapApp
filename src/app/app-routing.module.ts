@@ -5,6 +5,8 @@ import { DashboardPage } from './page/dashboard/dashboard.page';
 import { HomePage } from './home/home.page';
 import { HistoriquesPage } from './page/historiques/historiques.page';
 import { ReglagesPage } from './page/reglages/reglages.page';
+import { SauvegardePage } from './page/sauvegarde/sauvegarde.page';
+
 
 const routes: Routes = [
   {
@@ -37,6 +39,22 @@ const routes: Routes = [
             component: ReglagesPage,
           },
         ],
+      },{
+        path: 'sauvegarde',
+        children: [
+          {
+            path: '',
+            component: SauvegardePage,
+          },
+        ],
+      }, {
+        path: 'profil/reglages',
+        children: [
+          {
+            path: '',
+            component: ReglagesPage,
+          },
+        ],
       },
 
 
@@ -47,12 +65,7 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: '',
-    redirectTo: 'slides',
-    pathMatch: 'full',
-  }
-  ,
+ 
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
@@ -75,8 +88,16 @@ const routes: Routes = [
     loadChildren: () => import('./page/reglages/reglages.module').then( m => m.ReglagesPageModule)
   },
   {
+    path: 'dashboard/profil/reglages',
+    loadChildren: () => import('./page/reglages/reglages.module').then( m => m.ReglagesPageModule)
+  },
+  {
     path: 'dashboard/operations',
     loadChildren: () => import('./page/operations/operations.module').then( m => m.OperationsPageModule)
+  },
+  {
+    path: 'dashboard/sauvegarde',
+    loadChildren: () => import('./page/sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
   },
   {
     path: 'operation-modal',
@@ -86,10 +107,15 @@ const routes: Routes = [
     path: 'profil',
     loadChildren: () => import('./page/profil/profil.module').then( m => m.ProfilPageModule)
   },
+  
   {
     path: 'slides',
     loadChildren: () => import('./page/slides/slides.module').then( m => m.SlidesPageModule)
   },
+  {
+    path: 'sauvegarde',
+    loadChildren: () => import('./page/sauvegarde/sauvegarde.module').then( m => m.SauvegardePageModule)
+  }
 ];
 
 @NgModule({

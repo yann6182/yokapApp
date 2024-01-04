@@ -18,9 +18,11 @@ export class HistoriquesPage  {
 
   loadOperations() {
     this.sqlserv.getOperations().then(data => {
-      this.operations = data;
+      this.operations = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }).catch(err => {
+      console.error('Erreur lors du chargement des opérations', err);
     });
-  }
+   }
 
   getIconName(type: string): string {
     switch (type.toLowerCase()) {

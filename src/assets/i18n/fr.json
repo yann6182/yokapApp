@@ -26,9 +26,11 @@
       "title": "Historiques"
   },
   "operations": {
+    
       "title": "Opérations",
       "amount": "Montant",
       "date": "Date"
+      
   },
   "tabs": {
       "dashboard": "Tableau de Bord",

@@ -4,6 +4,7 @@ import { SqlService } from 'src/app/service/providers/sql.service';
 import { Chart, registerables } from 'chart.js';
 import { Totals } from 'src/app/models/Totals';
 import { UserSettingService } from 'src/app/service/autres/user-setting.service';
+import { filter } from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -21,20 +22,38 @@ export class DashboardPage implements OnInit, OnDestroy, AfterViewInit {
   soldeepargne!: string|number;
   showSoldePrincipal: boolean = true;
   userName!: string;
+  dailyTotals: any[]=[];
+  weeklyTotals: any[]=[];
+  yearlyTotals: any[]=[];
+  selectedOperationType = 'all';
+  displayedTotals: any;
 
   constructor(private sqlserv: SqlService, private navCtrl: NavController,private userserv:UserSettingService) {
     // Enregistrer les composants de Chart.js
     Chart.register(...registerables);
   }
 
+ 
+  
+
   ngOnInit() {
     this.refreshSoldes();
     this.refreshInterval = setInterval(() => this.refreshSoldes(), 5000);
     this.userName = this.userserv.getUserName();
+    this.load();
   }
+async load(){
+  this.dailyTotals = await this.sqlserv.getDailyTotals();
+    this.weeklyTotals = await this.sqlserv.getWeeklyTotals();
+    this.yearlyTotals = await this.sqlserv.getYearlyTotals();
+}
+  
 
   ngAfterViewInit() {
     this.initializeChart();
+    this.load();
+
+
   }
   //visibilité du solde
   toggleSoldePrincipalVisibility() {

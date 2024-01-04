@@ -52,3 +52,43 @@ ion-card-content {
   justify-content: center;
   align-items: center;
 }
+
+.custom-header {
+  background-color: #ffffff; /* Customize the background color */
+}
+
+.avatar-logo {
+  height: 40px; /* Adjust the height of the logo */
+}
+
+.header-title {
+  margin-left: 10px; /* Add margin for better spacing */
+}
+
+.greeting-row {
+  margin-top: 20px; /* Add margin for better separation from the header */
+}
+
+.greeting-col {
+  padding: 20px; /* Adjust padding for better spacing */
+}
+
+.greeting-message {
+  font-size: 1.2em; /* Customize the font size */
+  color: #333; /* Customize the text color */
+}
+
+.main-balance-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  border-radius: 10px; /* Round the corners */
+}
+
+.total-cards-row {
+  justify-content: space-around; /* Adjust spacing between cards */
+  margin-top: 20px; /* Add margin for better spacing */
+}
+
+.chart-canvas {
+  width: 100%; /* Ensure the chart canvas takes full width */
+  height: 200px; /* Adjust the height as needed */
+}

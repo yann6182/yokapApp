@@ -10,7 +10,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
   <ion-grid>
     <ion-row>
@@ -22,11 +21,11 @@
       <ion-col size="12" size-md="6">
         <ion-card class="mb-3">
           <ion-card-header>
-            {{ 'dashboard.main_balance' | translate }}
+            <h2>{{ 'dashboard.main_balance' | translate }}</h2>
             <ion-icon [name]="showSoldePrincipal ? 'eye' : 'eye-off'" size="large" (click)="toggleSoldePrincipalVisibility()"></ion-icon>
           </ion-card-header>
           <ion-card-content>
-            <p *ngIf="showSoldePrincipal; else hiddenSolde">{{ soldePrincipal | currency:'XAF' }}</p>
+            <p *ngIf="showSoldePrincipal; else hiddenSolde" style="font-size: 1.5em; color: #ff0000;">{{ soldePrincipal | currency:'XAF' }}</p>
             <ng-template #hiddenSolde>
               <p>*****</p>
             </ng-template>
@@ -35,14 +34,56 @@
       </ion-col>
     </ion-row>
 
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux Hebdomadaires</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let weeklyTotal of weeklyTotals" lines="none">
+            <ion-label>{{ weeklyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ weeklyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux Journaliers</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let dailyTotal of dailyTotals" lines="none">
+            <ion-label>{{ dailyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ dailyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="dashboard-card">
+      <ion-card-header>
+        <ion-title class="card-title">Totaux annuels</ion-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let yearlyTotal of yearlyTotals" lines="none">
+            <ion-label>{{ yearlyTotal.type }}</ion-label>
+            <ion-note slot="end">{{ yearlyTotal.total | currency:'FCFA' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
     <!-- Cartes pour les totaux -->
     <ion-row *ngIf="totals">
       <!-- Carte pour les dépôts -->
       <ion-col size-md="4">
-        <ion-card class="total-card">
+        <ion-card class="total-card" color="primary">
           <ion-card-header>
-            <h3>{{ 'dashboard.deposit' | translate }}</h3>
-            <ion-badge color="primary" slot="end"></ion-badge>
+            <h3><ion-icon name="arrow-down-circle-outline"></ion-icon> {{ 'dashboard.deposit' | translate }}</h3>
+            <ion-badge color="light" slot="end"></ion-badge>
           </ion-card-header>
           <ion-item>
             <ion-label>{{ totals.Depot | currency:'XAF' }}</ion-label>
@@ -52,10 +93,10 @@
 
       <!-- Carte pour les retraits -->
       <ion-col size-md="4">
-        <ion-card class="total-card">
+        <ion-card class="total-card" color="secondary">
           <ion-card-header>
-            <h3>{{ 'dashboard.withdrawal' | translate }}</h3>
-            <ion-badge color="secondary" slot="end"></ion-badge>
+            <h3><ion-icon name="arrow-up-circle-outline"></ion-icon> {{ 'dashboard.withdrawal' | translate }}</h3>
+            <ion-badge color="light" slot="end"></ion-badge>
           </ion-card-header>
           <ion-item>
             <ion-label>{{ totals.Retrait | currency:'XAF' }}</ion-label>
@@ -65,10 +106,10 @@
 
       <!-- Carte pour les emprunts -->
       <ion-col size-md="4">
-        <ion-card class="total-card">
+        <ion-card class="total-card" color="tertiary">
           <ion-card-header>
-            <h3>{{ 'dashboard.loan' | translate }}</h3>
-            <ion-badge color="tertiary" slot="end"></ion-badge>
+            <h3><ion-icon name="cash-outline"></ion-icon> {{ 'dashboard.loan' | translate }}</h3>
+            <ion-badge color="light" slot="end"></ion-badge>
           </ion-card-header>
           <ion-item>
             <ion-label>{{ totals.Emprunt | currency:'XAF' }}</ion-label>
@@ -78,10 +119,10 @@
 
       <!-- Carte pour les prêts -->
       <ion-col size-md="4">
-        <ion-card class="total-card">
+        <ion-card class="total-card" color="success">
           <ion-card-header>
-            <h3>{{ 'dashboard.lending' | translate }}</h3>
-            <ion-badge color="success" slot="end"></ion-badge>
+            <h3><ion-icon name="cash-outline"></ion-icon> {{ 'dashboard.lending' | translate }}</h3>
+            <ion-badge color="light" slot="end"></ion-badge>
           </ion-card-header>
           <ion-item>
             <ion-label>{{ totals.Pret | currency:'XAF' }}</ion-label>
@@ -91,10 +132,10 @@
 
       <!-- Carte pour l'épargne -->
       <ion-col size-md="4">
-        <ion-card class="total-card">
+        <ion-card class="total-card" color="warning">
           <ion-card-header>
-            <h3>{{ 'dashboard.savings' | translate }}</h3>
-            <ion-badge color="warning" slot="end"></ion-badge>
+            <h3><ion-icon name="wallet-outline"></ion-icon> {{ 'dashboard.savings' | translate }}</h3>
+            <ion-badge color="light" slot="end"></ion-badge>
           </ion-card-header>
           <ion-item>
             <ion-label>{{ totals.Epargne | currency:'XAF' }}</ion-label>
@@ -106,10 +147,10 @@
     <!-- Graphique -->
     <ion-row>
       <ion-col size="12">
+        <h2>{{ 'dashboard.chart_title' | translate }}</h2>
         <canvas #pieChart></canvas>
       </ion-col>
     </ion-row>
 
   </ion-grid>
 </ion-content>
-
